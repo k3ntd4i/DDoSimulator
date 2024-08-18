@@ -2,10 +2,7 @@ SRCDIR = src
 BUILDDIR = build
 OUTDIR = bin
 
-# Cambiar 'main.cpp' por el archivo que se quiera compilar
-# Si se trabajan con multiples archivos incluirlos asi:
-# $(SRCDIR)/archivo1.cpp $(SRCDIR)/archivo2.cpp ...
-SOURCES = $(SRCDIR)/main.cpp
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
 OBJECTS = $(patsubst src/%,build/%,$(SOURCES:.cpp=.o))
 
 # Aca es opcional cambiar el nombre del ejecutable (.exe generado)
@@ -30,14 +27,14 @@ LIB = -L"C:\build-SFML\SFML-2.6.1\lib" \
 FILE_TEST = prueba
 SOURCE_TEST = test/$(FILE_TEST).cpp
 
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(OBJECTS)
-	g++ $(OBJECTS) -o $(OUTDIR)/$(EXECUTABLE) $(LIB)
+$(OUTDIR)/$(EXECUTABLE): $(OBJECTS)
+	@echo "Linkeando: "
+	@echo "g++ $^ -o $(OUTDIR)/$(EXECUTABLE) $(LIB)"; \
+	g++ $^ -o $(OUTDIR)/$(EXECUTABLE) $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	@mkdir -p $(BUILDDIR)
-	g++ $(CFLAGS) -c $< -o $@ $(INC)
+	g++ $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
 	rm -f $(BUILDDIR)/*.o
