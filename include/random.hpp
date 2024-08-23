@@ -3,7 +3,7 @@
 #include <random>
 #include <chrono>
 
-namespace alr
+namespace azar
 {
     inline std::mt19937 generate()
     {
@@ -24,5 +24,10 @@ namespace alr
     inline int get(int min, int max)
     {
         return std::uniform_int_distribution{min, max} (mt);
+    }
+
+    inline float get(float min, float max)
+    {
+        return std::uniform_real_distribution{min, max} (mt);
     }
 }
