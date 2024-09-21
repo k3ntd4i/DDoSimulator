@@ -62,7 +62,3 @@ Para ejecutar alguna prueba (los códigos del directorio `test`) simplemente se 
 ```ps1
 make tester
 ```
-
-## .gitignore
-
-En teoría no se debería subir al repositorio los directorios `.vscode`, `bin`, `build` y `test`. Eso cada uno lo trabaja de forma personal, pero pues se necesitan las carpetas y por eso todo esta comentado en el `.gitignore`, por lo tanto, quitar los comentarios una vez se este desarrollando
