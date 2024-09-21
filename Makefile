@@ -8,7 +8,11 @@ OBJECTS = $(patsubst src/%,build/%,$(SOURCES:.cpp=.o))
 # Aca es opcional cambiar el nombre del ejecutable (.exe generado)
 EXECUTABLE = main
 
-INC = -I"C:\\build-SFML\\SFML-2.6.1\\include"
+# Poner la ruta completa de donde tengan ubicado cada directorio
+SFML_INCLUDE = C:\\build-SFML\\SFML-2.6.1\\include
+SFML_LIB = C:\\build-SFML\\SFML-2.6.1\\lib
+
+INC = -I"$(SFML_INCLUDE)"
 CFLAGS = -std=c++20 -DSFML_STATIC
 
 # Antes de cada modulo o dependencia poner '-l' seguido del nombre
@@ -17,7 +21,7 @@ CFLAGS = -std=c++20 -DSFML_STATIC
 # Las dependencias se deben poner en cierto orden:
 #	Si X depende de Y, entonces X debe ponerse antes de Y
 #	Consultar mas en: https://www.sfml-dev.org/tutorials/2.6/start-cb.php
-LIB = -L"C:\\build-SFML\\SFML-2.6.1\\lib" -static \
+LIB = -L"$(SFML_LIB)" -static \
 	-lsfml-graphics-s \
 	-lsfml-window-s \
 	-lsfml-system-s \
