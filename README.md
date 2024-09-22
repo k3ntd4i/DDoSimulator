@@ -16,6 +16,8 @@ Tener en las variables de entorno las rutas `mingw64\bin` (el compilador de SFML
 
 Poner en `c_cpp_properties.json` el compilador y el directorio `include` de SFML
 
+Buscar en la configuracion de vscode _"cppStandard"_ y seleccionar c++20
+
 ## Compilación
 
 En el archivo `Makefile` esta todo configurado, solo es cambiar variables cuando sea necesario (dentro del mismo archivo hay comentarios explicativos)
