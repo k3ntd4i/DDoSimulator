@@ -6,7 +6,7 @@ class Timer
 {
 private:
 	using Clock = std::chrono::steady_clock;
-	using Milisecond = std::chrono::duration<double, std::milli>;
+	using Milliseconds = std::chrono::duration<double, std::milli>;
 	using Seconds = std::chrono::seconds;
 	using Minutes = std::chrono::minutes;
 
@@ -18,7 +18,7 @@ public:
 
 	double elapsed() const
 	{
-		return std::chrono::duration_cast<Milisecond>(Clock::now() - inicio).count();
+		return std::chrono::duration_cast<Milliseconds>(Clock::now() - inicio).count();
 	}
 
 	double elapsed_seconds() const
