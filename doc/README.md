@@ -4,7 +4,11 @@
 
 ### `puzzle`
 
-El puzzle es lo que sucede al querer atacar una empresa, el usuario debe digital las iniciales (o el carácter correspondiente) de cada palabra. Ejemplo de uso (sin ningún temporizador):
+El puzzle es lo que sucede al querer atacar una empresa, el usuario debe digital las iniciales (o el carácter correspondiente) de cada palabra.
+
+Se usa un arreglo de 2000 palabras (1000 en español (sin tildes ni ñs) y 1000 en ingles) de manera estática (para que solo se genere una vez) y constante (ningún otro archivo la puede usar, no es global). Esta literalmente ahi puesto en el `puzzle.cpp` (bajar hasta al final para leer las funciones) porque ponerlo aparte genera muchos problemas, ademas leerlo de un archivo del sistema es aun peor. También hay un arreglo con 10 caracteres especiales
+
+ Ejemplo de uso (sin ningún temporizador):
 
 ```cpp
 #include "../include/puzzle.hpp"
