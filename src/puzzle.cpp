@@ -2019,7 +2019,13 @@ static const std::string chars[]
     "?"
 };
 
-std::string get_command(int amount, Cola<std::string> &extracted_words, bool hard)
+std::string get_command
+    (
+        int amount,
+        Cola<std::string> &extracted_words,
+        bool hard,
+        bool extreme
+    )
 {
     extracted_words.push(words[select::from_range(0, 1999)]);
 
@@ -2030,6 +2036,12 @@ std::string get_command(int amount, Cola<std::string> &extracted_words, bool har
         command_required += " " + extracted_words.back();
 
         if (hard && select::from_range(0, 1))
+        {
+            extracted_words.push(std::to_string(select::from_range(0, 9)));
+            command_required += " " + extracted_words.back();
+        }
+
+        if (extreme && select::from_range(0, 1))
         {
             extracted_words.push(chars[select::from_range(0, 9)]);
             command_required += " " + extracted_words.back();
