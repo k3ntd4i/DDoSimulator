@@ -3,9 +3,9 @@
 #include <random>
 #include <chrono>
 
-namespace azar
+namespace select
 {
-    inline std::mt19937 generate()
+    inline std::mt19937 new_generator()
     {
         std::random_device rd{};
 
@@ -19,14 +19,14 @@ namespace azar
         return std::mt19937{ ss };
     }
 
-    inline std::mt19937 mt{ generate() };
+    inline std::mt19937 mt{ new_generator() };
 
-    inline int get(int min, int max)
+    inline int from_range(int min, int max)
     {
         return std::uniform_int_distribution{min, max} (mt);
     }
 
-    inline float get(float min, float max)
+    inline float from_range(float min, float max)
     {
         return std::uniform_real_distribution{min, max} (mt);
     }
