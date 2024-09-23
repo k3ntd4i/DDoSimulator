@@ -31,6 +31,8 @@ LIB = -L"$(SFML_LIB)" -static \
 	-lgdi32
 
 # Cambiar 'prueba' por el nombre del archivo (sin .cpp) que se quiera compilar
+# Si el archivo de prueba no implica SFML, entonces compilarlo a mano desde la terminal
+#	g++ .\test\prueba.cpp -o .\test\prueba.exe 
 FILE_TEST = prueba
 SOURCE_TEST = test/$(FILE_TEST).cpp
 
