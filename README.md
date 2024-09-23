@@ -4,23 +4,31 @@
 
 - `assets`: Almacena los recursos del juego (imágenes, texturas, audio, etc.)
 - `bin`: Almacena los `.exe` que se generan al compilar
-- `build`: Almacena los archivos `.o` que se generan en el pre-compilado
+- `build`: Almacena los archivos `.o` que se generan durante la compilación, los cuales se utilizan como archivos precompilados para mejorar la eficiencia
 - `doc`: Almacena notas de desarrollo para guiarnos entre nosotros
-- `include`: Almacena todos los encabezados `.hpp` (códigos que se utilizan con `#include`)
-- `src`: Almacena el código como tal del juego
-- `test`: Almacena códigos de testeo
+- `include`: Almacena todos los encabezados `.hpp` (los archivos que se se incluyen usando `#include`)
+- `src`: Almacena todos los archivos `.cpp` del juego
+- `test`: Almacena códigos de prueba y experimentos
 
 ## Configuración
 
-Tener en las variables de entorno las rutas `mingw64\bin` (el compilador de SFML) y `msys64\usr\bin` (ahi esta el `make` de MSYS2) en el _path_
+Tener en las variables de entorno _'path'_ las rutas `mingw64\bin` (el compilador de SFML) y `msys64\usr\bin` (ahí está `make`)
 
 Poner en `c_cpp_properties.json` el compilador y el directorio `include` de SFML
 
-Buscar en la configuracion de vscode _"cppStandard"_ y seleccionar c++20
+Buscar en la configuración de vscode _"cppStandard"_ y seleccionar c++20
 
 ## Compilación
 
-En el archivo `Makefile` esta todo configurado, solo es cambiar variables cuando sea necesario (dentro del mismo archivo hay comentarios explicativos)
+Primero se necesitan crear los directorios `build` y `bin`, debido a que estos son ignorados por Git y no deberían estar en el repositorio
+
+El directorio `test` es opcional y se utiliza para poder almacenar las pruebas que quieran hacer sin afectar el proyecto, ya sea de SFML o de C++ en general. Su uso es personal, por lo que también se ignora en Git. Al realizar pruebas de SFML, es necesario agrupar todo el código en un solo archivo, y el `MakeFile` brinda el comando `tester` para compilar dichos archivos con todas las dependencias necesarias
+
+```ps1
+make tester
+```
+
+En el archivo `Makefile` está todo configurado, solo es cambiar variables cuando sea necesario (dentro del mismo archivo hay comentarios explicativos)
 
 - Antes de compilar tener en cuenta:
   - Usar **PowerShell** en vez de Git Bash
@@ -39,28 +47,26 @@ Para abrir el programa se ejecuta el `.exe` generado
 .\bin\main.exe
 ```
 
-Para volver a compilar algo se recomienda ejecutar `make clean` para limpiar lo de la compilación anterior
+También está el comando `make clean` para eliminar los archivos generados en la compilación anterior. Esto es util cuando se quiere compilar todo desde cero, mas que todo si parece haber algún conflicto o error entre los archivos precompilados (los `.o` del directorio `build`)
 
 ```ps1
 make clean
 ```
 
-Al ejecutar `make clean` se aumenta el tiempo de compilación, puesto que, se debe compilar todo de nuevo. En caso de solo hacer pequeñas modificaciones se recomienda simplemente ejecutar `make`, y el compilador sabrá automáticamente que archivo fue modificado sin necesidad de compilar todo lo demás
+Si solo se realizan pequeñas modificaciones, se recomienda simplemente ejecutar `make`. El compilador detectará automáticamente qué archivo ha sido modificado, sin necesidad de recompilar el resto.
 
 ### Script
 
-Como da pereza ejecutar a cada rato esos tres comandos hay un script en PowerShell que automatiza todo de forma segura, solo es ejecutar en la terminal el archivo `construir.ps1`
+Como da pereza ejecutar a cada rato esos tres comandos, se ha creado un script en PowerShell que automatiza todo de forma segura. Solo hay que ejecutar en la terminal el archivo `construir.ps1` (por defecto no se ejecuta `make clean`)
 
 ```ps1
 .\construir.ps1
 ```
 
-Sin embargo, debido a que el script no fue escrito por el usuario de su sistema, Windows no lo ejecuta por seguridad. En dicha situación, copiar el contenido del script y crear un nuevo archivo `construir.ps1`, de esta forma Windows cree que el usuario escribió el script y por ende ya lo puede ejecutar
-
-### Tests
-
-Para ejecutar alguna prueba (los códigos del directorio `test`) simplemente se debe ejecutar en la terminal `make tester` (automáticamente se ejecuta el `.exe` generado)
+Para que el script ejecute `make clean` se le debe pasar la opción `-c`
 
 ```ps1
-make tester
+.\construir.ps1 -c
 ```
+
+Sin embargo, dado que el script no fue creado por el usuario en su sistema, Windows no lo ejecuta por razones de seguridad. En este caso, se puede copiar el contenido del script y crear un nuevo archivo `construir.ps1`. De esta manera, Windows considerará que el usuario ha escrito el script y, por lo tanto, podrá ejecutarlo.
