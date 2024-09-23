@@ -10,24 +10,24 @@ private:
 	using Seconds = std::chrono::seconds;
 	using Minutes = std::chrono::minutes;
 
-	std::chrono::time_point<Clock> inicio{ Clock::now() };
+	std::chrono::time_point<Clock> start{ Clock::now() };
 
 public:
 	Timer() = default;
-	void reset() { inicio = Clock::now(); }
+	void reset() { start = Clock::now(); }
 
 	double elapsed() const
 	{
-		return std::chrono::duration_cast<Milliseconds>(Clock::now() - inicio).count();
+		return std::chrono::duration_cast<Milliseconds>(Clock::now() - start).count();
 	}
 
 	double elapsed_seconds() const
 	{
-		return std::chrono::duration_cast<Seconds>(Clock::now() - inicio).count();
+		return std::chrono::duration_cast<Seconds>(Clock::now() - start).count();
 	}
 
 	double elapsed_minutes() const
 	{
-		return std::chrono::duration_cast<Minutes>(Clock::now() - inicio).count();
+		return std::chrono::duration_cast<Minutes>(Clock::now() - start).count();
 	}
 };
