@@ -1,5 +1,13 @@
-Write-Host "[+] Ejecutando 'make clean'"
-& make clean
+param
+(
+    [switch] $c
+)
+
+if ($c)
+{
+    Write-Host "[+] Ejecutando 'make clean'"
+    & make clean
+}
 
 Write-Host "[+] Ejecutando 'make':"
 & make
