@@ -1,12 +1,24 @@
 #include "../include/configuration.hpp"
 
-void initialize_window(sf::RenderWindow &window, sf::View &view)
+void initialize_window(sf::RenderWindow &window)
 {
-    unsigned int pixel_depth{ sf::VideoMode::getDesktopMode().bitsPerPixel };
-
-    window.create(sf::VideoMode{ 800, 600, pixel_depth }, "DDoSimulator");
-    view.reset(sf::FloatRect{ 0.f, 0.f, 800.f, 600.f });
+    window.create
+    (
+        sf::VideoMode{ 1280, 720, sf::VideoMode::getDesktopMode().bitsPerPixel },
+        "DDoSimulator"
+    );
 
     window.setVerticalSyncEnabled(true);
-    window.setView(view);
+}
+
+void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_background)
+{
+    if (!texture_background.loadFromFile(R"(assets\images\map.png)"))
+    {
+        throw std::runtime_error{ "The background could not be loaded." };
+    }
+
+    sprite_background.setTexture(texture_background);
+    sprite_background.setScale(0.26f, 0.26f);
+    sprite_background.setPosition(112.f, 76.f);
 }
