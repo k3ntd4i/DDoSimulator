@@ -1,5 +1,4 @@
 #include "../include/configuration.hpp"
-#include "../include/puzzle.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include <stdexcept>
