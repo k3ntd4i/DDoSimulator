@@ -22,3 +22,23 @@ void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_backgrou
     sprite_background.setScale(0.26f, 0.26f);
     sprite_background.setPosition(112.f, 76.f);
 }
+
+void initialize_text(sf::Font &font, sf::Text &text)
+{
+    if (!font.loadFromFile("./assets/fonts/digital.TTF")) {
+        throw std::runtime_error{"The font could not be loaded."};
+    }
+
+    text.setFont(font);
+    text.setCharacterSize(35);
+    text.setFillColor(sf::Color::White);
+}
+
+
+
+void initialize_time_text(sf::Font &font, sf::Text &countdown_text)
+{
+    countdown_text.setFont(font);
+    countdown_text.setCharacterSize(60);
+    countdown_text.setFillColor(sf::Color::White);
+}

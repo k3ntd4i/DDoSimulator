@@ -1,33 +1,7 @@
 #pragma once
 
-#include <chrono>
+#include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
+#include "SFML/System.hpp"
 
-class Timer
-{
-private:
-    using Clock = std::chrono::steady_clock;
-    using Milliseconds = std::chrono::duration<double, std::milli>;
-    using Seconds = std::chrono::seconds;
-    using Minutes = std::chrono::minutes;
-
-    std::chrono::time_point<Clock> start{ Clock::now() };
-
-public:
-    Timer() = default;
-    void reset() { start = Clock::now(); }
-
-    double elapsed() const
-    {
-        return std::chrono::duration_cast<Milliseconds>(Clock::now() - start).count();
-    }
-
-    double elapsed_seconds() const
-    {
-        return std::chrono::duration_cast<Seconds>(Clock::now() - start).count();
-    }
-
-    double elapsed_minutes() const
-    {
-        return std::chrono::duration_cast<Minutes>(Clock::now() - start).count();
-    }
-};
+void draw_countdown(sf::RenderWindow &window, sf::Clock &clock, sf::Time &countdown_time, sf::Text &countdown_text);
