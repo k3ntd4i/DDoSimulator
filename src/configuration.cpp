@@ -1,14 +1,14 @@
 #include "../include/configuration.hpp"
 
-void initialize_window(sf::RenderWindow &window, sf::View &view)
+void initialize_window(sf::RenderWindow &window)
 {
-    unsigned int pixel_depth{ sf::VideoMode::getDesktopMode().bitsPerPixel };
-
-    window.create(sf::VideoMode{ 1280, 720, pixel_depth }, "DDoSimulator");
-    view.reset(sf::FloatRect{ 0.f, 0.f, 1280.f, 720.f });
+    window.create
+    (
+        sf::VideoMode{ 1280, 720, sf::VideoMode::getDesktopMode().bitsPerPixel },
+        "DDoSimulator"
+    );
 
     window.setVerticalSyncEnabled(true);
-    window.setView(view);
 }
 
 void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_background)

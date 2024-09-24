@@ -7,9 +7,7 @@
 int main()
 {
     sf::RenderWindow window{};
-    sf::View view{};
-
-    initialize_window(window, view);
+    initialize_window(window);
 
     sf::Texture texture_background{};
     sf::Sprite sprite_background{};
