@@ -9,10 +9,11 @@ int main()
     sf::RenderWindow window{};
     sf::View view{};
 
+    initialize_window(window, view);
+
     sf::Texture texture_background{};
     sf::Sprite sprite_background{};
 
-    initialize_window(window, view);
     try
     {
         initialize_map(texture_background, sprite_background);
