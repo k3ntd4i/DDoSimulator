@@ -1,4 +1,4 @@
-#include "../include/timer.hpp"
+#include "../include/timmer.hpp"
 #include "../include/configuration.hpp"
 #include "../include/gui.hpp"
 #include "SFML/Graphics.hpp"
