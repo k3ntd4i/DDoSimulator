@@ -22,3 +22,19 @@ void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_backgrou
     sprite_background.setScale(0.26f, 0.26f);
     sprite_background.setPosition(112.f, 76.f);
 }
+
+void initialize_words(std::string *array_words)
+{
+    std::ifstream file{ R"(data\words.txt)" };
+
+    if (!file)
+    {
+        throw std::runtime_error{ "Words could not be initialized." };
+    }
+
+    std::string word{};
+    for (int i{0}; std::getline(file, word); ++i)
+    {
+        array_words[i] = word;
+    }
+}
