@@ -1,12 +1,15 @@
 #include "../include/timmer.hpp"
 #include "../include/configuration.hpp"
 #include "../include/gui.hpp"
+#include "../include/company_counter.hpp"
+#include "../include/user.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "SFML/System.hpp"
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include <string>
 
 int main()
 {
@@ -22,6 +25,8 @@ int main()
     sf::Text words_text{}; //palabras aleatorias
     sf::Text input_text{}; //input del usuario
 
+    std::string *array_words{ new std::string[2000]{} };
+
     try
     {
         initialize_map(texture_background, sprite_background);
@@ -30,12 +35,16 @@ int main()
         initialize_console_text(font, words_text);
         initialize_console_input_text(font, input_text);
 
+        initialize_words(array_words);
     }
     catch (const std::runtime_error &error)
     {
         std::cerr << "Error in initialization. " << error.what();
         return 1;
     }
+
+    User user{};
+    CompanyCounter company_counter{};
 
     sf::Time countdown_time{ sf::seconds(120.0f) };
     sf::Clock clock{};

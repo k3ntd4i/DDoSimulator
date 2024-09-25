@@ -55,3 +55,19 @@ void initialize_console_input_text(sf::Font &font, sf::Text &input_text)
     input_text.setCharacterSize(45);
     input_text.setFillColor(sf::Color::Black);
 }
+
+void initialize_words(std::string *array_words)
+{
+    std::ifstream file{ R"(data\words.txt)" };
+
+    if (!file)
+    {
+        throw std::runtime_error{ "Words could not be initialized." };
+    }
+
+    std::string word{};
+    for (int i{0}; std::getline(file, word); ++i)
+    {
+        array_words[i] = word;
+    }
+}

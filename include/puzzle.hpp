@@ -10,6 +10,7 @@ std::string get_command
 (
     int amount,
     Cola<std::string> &extracted_words,
+    std::string *words,
     bool hard = false,
     bool extreme = false
 );
