@@ -25,7 +25,7 @@ int main()
         if (!store.initialize_store_icon()) {
             throw std::runtime_error{ "Failed to load store icon." };
         }
-        store.set_store_icon_position(10.f, window.getSize().y - 60.f);
+        store.set_store_icon_position(10.f, window.getSize().y - 600.f);
     }
     catch (const std::runtime_error &error)
     {
