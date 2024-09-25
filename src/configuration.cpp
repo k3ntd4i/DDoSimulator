@@ -23,13 +23,16 @@ void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_backgrou
     sprite_background.setPosition(112.f, 76.f);
 }
 
-void initialize_progress_text(sf::Font &font, sf::Text &text)
+void initialize_font(sf::Font &font)
 {
     if (!font.loadFromFile("./assets/fonts/digital.TTF"))
     {
         throw std::runtime_error{ "The font could not be loaded." };
     }
+}
 
+void initialize_progress_bar_text(sf::Font &font, sf::Text &text)
+{
     text.setFont(font);
     text.setCharacterSize(35);
     text.setFillColor(sf::Color::White);
@@ -56,6 +59,27 @@ void initialize_console_input_text(sf::Font &font, sf::Text &input_text)
     input_text.setFillColor(sf::Color::Black);
 }
 
+void initialize_console_window
+(
+    sf::RectangleShape &translucent_background,
+    sf::RectangleShape &console,
+    sf::RectangleShape &text_field
+)
+{
+    translucent_background.setPosition(0, 0);
+    translucent_background.setFillColor(sf::Color(0, 25, 0, 100));
+
+    console.setPosition(320.f, 180.f);
+    console.setFillColor(sf::Color(0, 0, 0));
+    console.setOutlineColor(sf::Color::White);
+    console.setOutlineThickness(-1.f);
+
+    text_field.setPosition(350.f, 340.f);
+    text_field.setFillColor(sf::Color::White);
+    // text_field.setOutlineColor(sf::Color::White);
+    // text_field.setOutlineThickness(-2.f);
+}
+
 void initialize_words(std::string *array_words)
 {
     std::ifstream file{ R"(data\words.txt)" };
@@ -69,5 +93,20 @@ void initialize_words(std::string *array_words)
     for (int i{0}; std::getline(file, word); ++i)
     {
         array_words[i] = word;
+    }
+}
+
+void initialize_company_network(GrafoSimple<sf::CircleShape*> &company_network)
+{
+    sf::CircleShape *circle{};
+    for (int i{0}; i < 5; ++i)
+    {
+        circle = new sf::CircleShape{};
+
+        circle->setRadius(50);
+        circle->setPosition(100 * (i + 5), 200);
+        circle->setFillColor(sf::Color::Green);
+
+        company_network.set_node(i, circle);
     }
 }

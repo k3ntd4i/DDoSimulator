@@ -1,15 +1,20 @@
 #include "../include/actions.hpp"
 
-void verify_node_click(sf::RenderWindow &window)
+void verify_node_click
+(
+    sf::RenderWindow &window,
+    GrafoSimple<sf::CircleShape*> &company_network,
+    bool &click_flag,
+    sf::Clock &console_time
+)
 {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-    // Logica temporal para clickear los nodos de las compañias
-    for (int i = 0; i < 5; ++i)
+    sf::Vector2i mousePos{ sf::Mouse::getPosition(window) };
+    for (int i{0}; i < 5; ++i)
     {
-        if (circles[i].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) 
+        if (company_network.get_element(i)->getGlobalBounds().contains
+            (static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
         {
-            circles[i].setFillColor(sf::Color::Red);
+            company_network.get_element(i)->setFillColor(sf::Color::Red);
             std::cout << "Circle " << i + 1 << " clicked\n";
             click_flag = true;
             console_time.restart();
