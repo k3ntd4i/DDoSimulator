@@ -10,6 +10,12 @@
 - `src`: Almacena todos los archivos `.cpp` del juego
 - `test`: Almacena códigos de prueba y experimentos
 
+El directorio `test` es opcional y se utiliza para poder almacenar las pruebas que quieran hacer sin afectar el proyecto, ya sea de SFML o de C++ en general. Su uso es personal, por lo que también se ignora en Git. Al realizar pruebas de SFML, es necesario agrupar todo el código en un solo archivo, y el `MakeFile` brinda el comando `tester` para compilar dichos archivos con todas las dependencias necesarias:
+
+```ps1
+make tester
+```
+
 ## Configuración
 
 Tener en las variables de entorno _'path'_ las rutas `mingw64\bin` (el compilador de SFML) y `msys64\usr\bin` (ahí está `make`)
@@ -20,15 +26,9 @@ Buscar en la configuración de vscode _"cppStandard"_ y seleccionar c++20
 
 ## Compilación
 
-Primero se necesitan crear los directorios `build` y `bin`, debido a que estos son ignorados por Git y no deberían estar en el repositorio
+### Makefile
 
-El directorio `test` es opcional y se utiliza para poder almacenar las pruebas que quieran hacer sin afectar el proyecto, ya sea de SFML o de C++ en general. Su uso es personal, por lo que también se ignora en Git. Al realizar pruebas de SFML, es necesario agrupar todo el código en un solo archivo, y el `MakeFile` brinda el comando `tester` para compilar dichos archivos con todas las dependencias necesarias
-
-```ps1
-make tester
-```
-
-En el archivo `Makefile` está todo configurado, solo es cambiar variables cuando sea necesario (tener en cuenta que se ignora por Git, cada uno cambia a su gusto las carpetas de SFML y los archivos de test):
+Se debe crear un archivo llamado `Makefile` en la raiz del proyecto, luego pegar el siguiente codigo y cambiar las variables necesarias (en los comentarios esta la explicacion detallada)
 
 ```make
 SRCDIR = src
@@ -70,6 +70,7 @@ FILE_TEST = prueba
 SOURCE_TEST = test/$(FILE_TEST).cpp
 
 $(OUTDIR)/$(EXECUTABLE): $(OBJECTS)
+	@mkdir -p $(OUTDIR)
 	@echo "Linkeando: "
 	@echo "g++ $^ -o $(OUTDIR)/$(EXECUTABLE) $(LIB)"; \
 	g++ $^ -o $(OUTDIR)/$(EXECUTABLE) $(LIB)
