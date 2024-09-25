@@ -9,8 +9,6 @@
 
 int main()
 {
-    
-
     sf::RenderWindow window{};
     initialize_window(window);
 
@@ -18,18 +16,13 @@ int main()
     sf::Sprite sprite_background{};
     
     sf::Font font{};
-    sf::Text text{};
-    sf::Text countdown_text;
-
-    sf::Time countdown_time{sf::seconds(120.0f)};
-    sf::Clock clock{};
-    
-
+    sf::Text progress_bar_text{};
+    sf::Text countdown_text{};
 
     try
     {
         initialize_map(texture_background, sprite_background);
-        initialize_text(font, text);
+        initialize_progress_text(font, progress_bar_text);
         initialize_time_text(font, countdown_text);
     }
     catch (const std::runtime_error &error)
@@ -38,8 +31,8 @@ int main()
         return 1;
     }
 
-
-
+    sf::Time countdown_time{ sf::seconds(120.0f) };
+    sf::Clock clock{};
 
     while (window.isOpen())
     {
@@ -55,18 +48,15 @@ int main()
             default:
                 break;
             }
-
-
         }
 
         window.clear(sf::Color::Black);
         window.draw(sprite_background);
 
-        draw_bar(window, text);
+        draw_bar(window, progress_bar_text);
         draw_countdown(window, clock, countdown_time, countdown_text);
 
         window.display();
-
     }
 
     return 0;
