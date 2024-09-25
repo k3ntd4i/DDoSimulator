@@ -41,3 +41,17 @@ void initialize_time_text(sf::Font &font, sf::Text &countdown_text)
     countdown_text.setCharacterSize(60);
     countdown_text.setFillColor(sf::Color::White);
 }
+
+void initialize_console_text(sf::Font &font, sf::Text &words_text)
+{
+    words_text.setFont(font);
+    words_text.setCharacterSize(45);
+    words_text.setFillColor(sf::Color::Green);
+}
+
+void initialize_console_input_text(sf::Font &font, sf::Text &input_text)
+{
+    input_text.setFont(font);
+    input_text.setCharacterSize(45);
+    input_text.setFillColor(sf::Color::Black);
+}
