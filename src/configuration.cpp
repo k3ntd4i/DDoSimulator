@@ -23,18 +23,35 @@ void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_backgrou
     sprite_background.setPosition(112.f, 76.f);
 }
 
-void initialize_words(std::string *array_words)
+void initialize_progress_text(sf::Font &font, sf::Text &text)
 {
-    std::ifstream file{ R"(data\words.txt)" };
-
-    if (!file)
+    if (!font.loadFromFile("./assets/fonts/digital.TTF"))
     {
-        throw std::runtime_error{ "Words could not be initialized." };
+        throw std::runtime_error{ "The font could not be loaded." };
     }
 
-    std::string word{};
-    for (int i{0}; std::getline(file, word); ++i)
-    {
-        array_words[i] = word;
-    }
+    text.setFont(font);
+    text.setCharacterSize(35);
+    text.setFillColor(sf::Color::White);
+}
+
+void initialize_time_text(sf::Font &font, sf::Text &countdown_text)
+{
+    countdown_text.setFont(font);
+    countdown_text.setCharacterSize(60);
+    countdown_text.setFillColor(sf::Color::White);
+}
+
+void initialize_console_text(sf::Font &font, sf::Text &words_text)
+{
+    words_text.setFont(font);
+    words_text.setCharacterSize(45);
+    words_text.setFillColor(sf::Color::Green);
+}
+
+void initialize_console_input_text(sf::Font &font, sf::Text &input_text)
+{
+    input_text.setFont(font);
+    input_text.setCharacterSize(45);
+    input_text.setFillColor(sf::Color::Black);
 }

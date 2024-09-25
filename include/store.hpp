@@ -38,7 +38,7 @@ private:
     ArbolBusquedaBinaria<Product> power_tree{};
     sf::Texture store_icon_texture{};
     sf::Sprite store_icon_sprite{};
-    bool is_store_open{false};
+    bool _is_store_open{false};  // Renamed member variable
 
     void initialize_power_tree();
     void draw_power_tree(sf::RenderWindow& window);
@@ -49,6 +49,9 @@ public:
     bool initialize_store_icon();
     void set_store_icon_position(float x, float y);
     void toggle_store();
+    bool is_store_open() const { 
+        return _is_store_open;    
+    }
     void handle_click(float x, float y);
     void update(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
