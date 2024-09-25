@@ -41,3 +41,19 @@ void initialize_time_text(sf::Font &font, sf::Text &countdown_text)
     countdown_text.setCharacterSize(60);
     countdown_text.setFillColor(sf::Color::White);
 }
+
+void initialize_words(std::string *array_words)
+{
+    std::ifstream file{ R"(data\words.txt)" };
+
+    if (!file)
+    {
+        throw std::runtime_error{ "Words could not be initialized." };
+    }
+
+    std::string word{};
+    for (int i{0}; std::getline(file, word); ++i)
+    {
+        array_words[i] = word;
+    }
+}

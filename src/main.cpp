@@ -6,6 +6,7 @@
 #include "SFML/System.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <string>
 
 int main()
 {
@@ -19,11 +20,14 @@ int main()
     sf::Text progress_bar_text{};
     sf::Text countdown_text{};
 
+    std::string *array_words{ new std::string[2000]{} };
+
     try
     {
         initialize_map(texture_background, sprite_background);
         initialize_progress_text(font, progress_bar_text);
         initialize_time_text(font, countdown_text);
+        initialize_words(array_words);
     }
     catch (const std::runtime_error &error)
     {
