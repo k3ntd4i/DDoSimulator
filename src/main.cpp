@@ -1,6 +1,8 @@
 #include "../include/timmer.hpp"
 #include "../include/configuration.hpp"
 #include "../include/gui.hpp"
+#include "../include/company_counter.hpp"
+#include "../include/user.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "SFML/System.hpp"
@@ -34,6 +36,9 @@ int main()
         std::cerr << "Error in initialization. " << error.what();
         return 1;
     }
+
+    User user{};
+    CompanyCounter company_counter{};
 
     sf::Time countdown_time{ sf::seconds(120.0f) };
     sf::Clock clock{};
