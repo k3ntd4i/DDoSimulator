@@ -122,7 +122,7 @@ int main()
 
             if (click_flag)
             {
-                command_required = get_command(6, extracted_words, array_words, true, true);
+                command_required = get_command(6, extracted_words, array_words, false, false);
             }
         }
 
@@ -167,7 +167,7 @@ int main()
         draw_bar(window, progress_bar_text);
         draw_countdown(window, countdown_clock, countdown_time, countdown_text);
 
-        if (click_flag && console_time.getElapsedTime().asSeconds() < 60.f)
+        if (click_flag && console_time.getElapsedTime().asSeconds() < 10.f)
         {
             popup_console_window(user_input, command_required, command_required_text, input_command_text);
             window.draw(translucent_background);
