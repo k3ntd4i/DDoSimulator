@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 #include <optional>
-
+#include <vector>
 
 class Product {
 private:
@@ -15,6 +15,7 @@ private:
     int price{};
     bool is_purchased{false};
     bool is_unlocked{false};
+    sf::Vector2f position{};
 
 public:
     Product() = default;
@@ -28,6 +29,8 @@ public:
     std::optional<int> get_price() const;
     bool is_product_purchased() const;
     bool is_product_unlocked() const;
+    void set_position(float x, float y);
+    sf::Vector2f get_position() const;
 
     bool operator<(const Product& other) const;
     bool operator>(const Product& other) const;
@@ -39,15 +42,15 @@ private:
     ArbolBusquedaBinaria<Product> power_tree{};
     sf::Texture store_icon_texture{};
     sf::Sprite store_icon_sprite{};
-    bool _is_store_open{false};  
+    bool _is_store_open{false};
+    std::vector<Product> pre_order_products{};
+    int yuca_coins{100};
 
     void initialize_power_tree();
-    void draw_power_tree(sf::RenderWindow& window);
-    void draw_binary_tree_recursively(sf::RenderWindow& window, ArbolBinario<Product>* node, 
-                                  sf::Vector2f position, float offset_x, const sf::Font& font);
-
-    void draw_binary_tree(sf::RenderWindow& window, ArbolBusquedaBinaria<Product>& tree, const sf::Font& font);
-
+    void update_pre_order_products();
+    void draw_power_tree(sf::RenderWindow& window, const sf::Font& font);
+    bool attempt_purchase(const Product& product);
+    void collect_pre_order_products(ArbolBinario<Product>* node);
 
 public:
     Store();
@@ -55,10 +58,10 @@ public:
     bool initialize_store_icon();
     void set_store_icon_position(float x, float y);
     void toggle_store();
-    bool is_store_open() const { 
-        return _is_store_open;    
-    }
-    void handle_click(float x, float y);
+    bool is_store_open() const { return _is_store_open; }
+    void handle_click(float x, float y, const sf::Font& font);
     void update(sf::RenderWindow& window);
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window, const sf::Font& font);
+    void set_product_position(const std::string& product_name, float x, float y);
+    ArbolBinario<Product>* get_power_tree_root() { return power_tree.get_root(); }
 };

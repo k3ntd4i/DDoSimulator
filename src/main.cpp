@@ -33,6 +33,18 @@ int main()
         initialize_console_text(font, words_text);
         initialize_console_input_text(font, input_text);
         store.initialize_store_icon();
+
+        // Set positions for products (adjust these as needed)
+        store.set_product_position("Exploit Enhancer", 540.f, 200.f);
+        store.set_product_position("Firewall Bypass", 440.f, 300.f);
+        store.set_product_position("Code Injection", 640.f, 300.f);
+        store.set_product_position("Packet Sniffer", 340.f, 400.f);
+        store.set_product_position("Rootkit Reducer", 540.f, 400.f);
+        store.set_product_position("Malware Minimizer", 740.f, 400.f);
+        store.set_product_position("DDoS Amplifier", 240.f, 500.f);
+        store.set_product_position("Zero-Day Surge", 440.f, 500.f);
+        store.set_product_position("Brute Force Multiplier", 640.f, 500.f);
+        store.set_product_position("Ultimate Exploit", 840.f, 500.f);
     }
     catch (const std::runtime_error &error)
     {
@@ -40,10 +52,10 @@ int main()
         return 1;
     }
 
-    sf::Time countdown_time{ sf::seconds(120.0f) };  // Tiempo inicial
-    sf::Clock clock{};  // Reloj del juego
-    sf::Time paused_time{};  // Tiempo acumulado al abrir la tienda
-    bool store_opened_last_frame = false;  // Para saber si la tienda se abrió o cerró
+    sf::Time countdown_time{ sf::seconds(120.0f) };
+    sf::Clock clock{};
+    sf::Time paused_time{};
+    bool store_opened_last_frame = false;
 
     std::vector<sf::CircleShape> circles(5);
     
@@ -70,8 +82,9 @@ int main()
                 break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    store.handle_click(static_cast<float>(sf::Mouse::getPosition(window).x), 
-                                       static_cast<float>(sf::Mouse::getPosition(window).y));
+                    store.handle_click(static_cast<float>(event.mouseButton.x), 
+                                       static_cast<float>(event.mouseButton.y),
+                                       font);
                 }
                 break;
             case sf::Event::TextEntered:
@@ -128,7 +141,7 @@ int main()
             user_input = "";
         }
 
-        store.draw(window);
+        store.draw(window, font);  // Pass the font to the draw method
         window.display();
     }
 
