@@ -35,16 +35,16 @@ int main()
         store.initialize_store_icon();
 
         // Set positions for products (adjust these as needed)
-        store.set_product_position("Exploit Enhancer", 540.f, 200.f);
-        store.set_product_position("Firewall Bypass", 440.f, 300.f);
-        store.set_product_position("Code Injection", 640.f, 300.f);
-        store.set_product_position("Packet Sniffer", 340.f, 400.f);
-        store.set_product_position("Rootkit Reducer", 540.f, 400.f);
-        store.set_product_position("Malware Minimizer", 740.f, 400.f);
-        store.set_product_position("DDoS Amplifier", 240.f, 500.f);
-        store.set_product_position("Zero-Day Surge", 440.f, 500.f);
-        store.set_product_position("Brute Force Multiplier", 640.f, 500.f);
-        store.set_product_position("Ultimate Exploit", 840.f, 500.f);
+        store.set_product_position("Exploit Enhancer", 610.f, 555.f);
+        store.set_product_position("Firewall Bypass", 712.f, 485.f);
+        store.set_product_position("Code Injection", 780.f, 415.f);
+        store.set_product_position("Packet Sniffer", 787.f, 280.f);
+        store.set_product_position("Rootkit Reducer", 649.f, 220.f);
+        store.set_product_position("Malware Minimizer", 649.f, 335.f);
+        store.set_product_position("DDoS Amplifier", 510.f, 485.f);
+        store.set_product_position("Zero-Day Surge", 565.f, 335.f);
+        store.set_product_position("Brute Force Multiplier", 568.f, 220.f);
+        store.set_product_position("Ultimate Exploit", 440.f, 415.f);
     }
     catch (const std::runtime_error &error)
     {

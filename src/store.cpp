@@ -31,7 +31,7 @@ void Store::initialize_power_tree() {
     power_tree.insert(Product("Rootkit Reducer", "Removes 1 word from terminal", 6));
     power_tree.insert(Product("Malware Minimizer", "Removes 1 word from terminal", 8));
     power_tree.insert(Product("DDoS Amplifier", "Increases attack power by 5", 13));
-    power_tree.insert(Product("Zero-Day Surge", "Increases attack power by 12", 12));
+    power_tree.insert(Product("Zero-Day Surge", "Increases attack power by 12", 12)); 
     power_tree.insert(Product("Brute Force Multiplier", "Increases attack power by 24", 11));
     power_tree.insert(Product("Ultimate Exploit", "Increases attack power by 50", 38));
 }
@@ -96,37 +96,61 @@ void Store::handle_click(float x, float y, const sf::Font& font) {
     }
 }
 
+
 void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font) {
     sf::RectangleShape background_block{ sf::Vector2f{ 1280.f, 720.f } };
     background_block.setFillColor(sf::Color(0, 0, 0, 150));
     window.draw(background_block);
 
-    sf::RectangleShape store_window{ sf::Vector2f{ 800.f, 600.f } };
-    store_window.setFillColor(sf::Color::White);
-    store_window.setOutlineColor(sf::Color::Green);
-    store_window.setOutlineThickness(5.f);
-    store_window.setPosition(240.f, 60.f);
-    window.draw(store_window);
+    // Cargar y dibujar la imagen de fondo de la tienda
+    sf::Texture shop_background_texture;
+    if (!shop_background_texture.loadFromFile("assets/images/shop_background.png")) {
+        std::cerr << "Failed to load shop background image." << std::endl;
+        return;
+    }
+    sf::Sprite shop_background_sprite(shop_background_texture);
+    shop_background_sprite.setPosition(240.f, 60.f);
+    shop_background_sprite.setScale(
+        800.f / shop_background_texture.getSize().x,
+        600.f / shop_background_texture.getSize().y
+    );
+    window.draw(shop_background_sprite);
 
-    sf::Text store_title{ "Welcome Dark Web - Buy Powers", font, 45 };
-    store_title.setFillColor(sf::Color::Black);
+    // Dibujar el borde de la ventana de la tienda
+    sf::RectangleShape store_window_border{ sf::Vector2f{ 800.f, 600.f } };
+    store_window_border.setFillColor(sf::Color::Transparent);
+    store_window_border.setOutlineColor(sf::Color::Green);
+    store_window_border.setOutlineThickness(5.f);
+    store_window_border.setPosition(240.f, 60.f);
+    window.draw(store_window_border);
+
+    sf::Text store_title{ "", font, 45 };
+    store_title.setFillColor(sf::Color::White);  // Cambiado a blanco para que se vea sobre el fondo
     store_title.setPosition(320.f, 80.f);
     window.draw(store_title);
 
     sf::Text coins_text{ "Yuca Coins: " + std::to_string(yuca_coins), font, 30 };
-    coins_text.setFillColor(sf::Color::Black);
+    coins_text.setFillColor(sf::Color::White);  // Cambiado a blanco para que se vea sobre el fondo
     coins_text.setPosition(800.f, 120.f);
     window.draw(coins_text);
 
+    // Definir el tamaño de los nodos (puedes ajustar este valor según tus necesidades)
+    float node_radius = 30.f;  // Radio más pequeño para los nodos
+
     for (const auto& product : pre_order_products) {
-        sf::CircleShape node(40.f);
+        sf::CircleShape node(node_radius);
         node.setPosition(product.get_position());
         node.setFillColor(yuca_coins >= product.get_price().value_or(0) ? sf::Color::Green : sf::Color::Red);
         window.draw(node);
 
-        sf::Text node_text{ product.get_name().value_or("Unnamed"), font, 20 };
+        sf::Text node_text{ product.get_name().value_or("Unnamed"), font, 16 };  // Tamaño de fuente más pequeño
         node_text.setFillColor(sf::Color::Black);
-        node_text.setPosition(product.get_position().x + 10.f, product.get_position().y + 10.f);
+        
+        // Centrar el texto en el nodo
+        sf::FloatRect textRect = node_text.getLocalBounds();
+        node_text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top + textRect.height/2.0f);
+        node_text.setPosition(product.get_position().x + node_radius, product.get_position().y + node_radius);
+        
         window.draw(node_text);
     }
 }
