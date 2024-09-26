@@ -20,7 +20,7 @@ public:
 
     void update_integrity(int damage, CompanyCounter &company_counter);
 
-    int get_integrity() { return this->integriy; }
     std::string_view get_name() { return this->name; }
+    int get_integrity() { return this->integriy; }
     bool is_active() { return this->active; }
 };
