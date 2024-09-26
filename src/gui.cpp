@@ -2,7 +2,7 @@
 
 void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_text) 
 {
-    int infected{ 10 };
+    int infected{ 0 };
 
     progress_bar_text.setString( std::to_string(infected) + " / 22" );
     progress_bar_text.setPosition(640 - (progress_bar_text.getGlobalBounds().width / 2), 598.f);
