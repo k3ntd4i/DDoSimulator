@@ -33,16 +33,16 @@ void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_text)
 
 void popup_console_window
 (
-    sf::Text &words_text,
-    sf::Text &input_text,
-    std::string &user_input
+    const std::string &user_input,
+    const std::string &command_required,
+    sf::Text &command_required_text,
+    sf::Text &input_command_text
 )
 {
     // Palabras random
-    words_text.setString("pastel comida ## $5 5 amor");
-    words_text.setPosition(640 - (words_text.getGlobalBounds().width / 2), 270.f);
+    command_required_text.setString(command_required);
+    command_required_text.setPosition(640 - (command_required_text.getGlobalBounds().width / 2), 270.f);
 
-    std::string words{ user_input };
-    input_text.setString( words );
-    input_text.setPosition(640 - (input_text.getGlobalBounds().width / 2), 335.f);
+    input_command_text.setString(user_input);
+    input_command_text.setPosition(640 - (input_command_text.getGlobalBounds().width / 2), 335.f);
 }

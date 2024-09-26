@@ -21,3 +21,11 @@ void verify_node_click
         }
     }
 }
+
+void clear_extracted_words(Cola<std::string> &extracted_words)
+{
+    while (!extracted_words.is_empty())
+    {
+        extracted_words.pop();
+    }
+}

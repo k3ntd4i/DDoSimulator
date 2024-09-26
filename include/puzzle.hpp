@@ -15,4 +15,4 @@ std::string get_command
     bool extreme = false
 );
 
-bool correct_command(std::string_view input_command, Cola<std::string> &extracted_words);
+bool is_input_command_correct(std::string_view input_command, Cola<std::string> &extracted_words);

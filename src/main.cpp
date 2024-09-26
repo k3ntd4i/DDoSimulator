@@ -5,6 +5,7 @@
 #include "../include/company_counter.hpp"
 #include "../include/user.hpp"
 #include "../include/actions.hpp"
+#include "../include/puzzle.hpp"
 #include "../include/estructuras/tabla_hash.hpp"
 #include "../include/estructuras/grafo_simple.hpp"
 #include "../include/estructuras/cola.hpp"
@@ -30,6 +31,7 @@ int main()
     try
     {
         initialize_map(texture_background, sprite_background);
+        initialize_words(array_words);
         initialize_font(font);
     }
     catch (const std::runtime_error &error)
@@ -62,8 +64,12 @@ int main()
 
     initialize_company_network(company_network);
 
+    User user{};
+    CompanyCounter company_counter{};
+
     Cola<std::string> extracted_words{};
     std::string user_input{};
+    std::string command_required{};
 
     sf::Clock console_time{};
 
@@ -100,14 +106,39 @@ int main()
             }
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag)
         {
             verify_node_click(window, company_network, click_flag, console_time);
+
+            if (click_flag)
+            {
+                command_required = get_command(6, extracted_words, array_words, true, true);
+            }
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && click_flag)
         {
-            std::cout << "Texto ingresado: " << user_input;
+            std::cout << "Texto ingresado: " << user_input << '\n';
+            std::cout << "Texto requerido: " << command_required << '\n';
+
+            if (is_input_command_correct(user_input, extracted_words))
+            {
+                std::cout << "\nCorrecto!\n";
+                // logica de correcto
+            }
+            else
+            {
+                std::cout << "\nInorrecto!\n";
+
+                user.decrease_anonymity();
+                if (user.was_captured())
+                {
+                    std::cout << "\nHA SIDO CAPTURADO BRO, RIP!!!11\n";
+                    return 0;
+                }
+            }
+
+            clear_extracted_words(extracted_words);
             click_flag = false;
             user_input = "";
         }
@@ -124,17 +155,19 @@ int main()
         draw_bar(window, progress_bar_text);
         draw_countdown(window, countdown_clock, countdown_time, countdown_text);
 
-        if (click_flag && console_time.getElapsedTime().asSeconds() < 5.f)
+        if (click_flag && console_time.getElapsedTime().asSeconds() < 15.f)
         {
-            popup_console_window(command_required_text, input_command_text, user_input);
+            popup_console_window(user_input, command_required, command_required_text, input_command_text);
             window.draw(translucent_background);
             window.draw(console);
             window.draw(text_field);
             window.draw(command_required_text);
             window.draw(input_command_text);
         }
-        else
+        else if (click_flag)
         {
+            clear_extracted_words(extracted_words);
+            click_flag = false;
             user_input = "";
         }
 

@@ -35,7 +35,7 @@ std::string get_command
     return command_required;
 }
 
-bool correct_command(std::string_view input_command, Cola<std::string> &extracted_words)
+bool is_input_command_correct(std::string_view input_command, Cola<std::string> &extracted_words)
 {
     if (input_command.size() != extracted_words.size())
     {
