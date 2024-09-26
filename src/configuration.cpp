@@ -110,3 +110,30 @@ void initialize_company_network(GrafoSimple<sf::CircleShape*> &company_network)
         company_network.set_node(i, circle);
     }
 }
+
+void initialize_coins
+(   
+    int &yuca_quantity,
+    sf::Font &font,
+    sf::Text &coin_text, 
+    sf::CircleShape &circle_coin_container, 
+    sf::Texture &coin_texture
+)
+{
+    if (!coin_texture.loadFromFile(R"(assets\images\yuca_coin.png)"))
+    {
+        throw std::runtime_error{ "The coin texture could not be loaded." };
+    }
+
+    circle_coin_container.setTexture( &coin_texture );
+    circle_coin_container.setRadius(28.f);
+    circle_coin_container.setPosition(1190.f, 630.f);
+    
+    coin_text.setFont(font);
+    coin_text.setCharacterSize(45);
+    coin_text.setFillColor(sf::Color::White);
+
+    coin_text.setString( std::to_string(yuca_quantity) );
+    coin_text.setPosition( 1168 - (coin_text.getGlobalBounds().width / 2), 628.f );
+
+}

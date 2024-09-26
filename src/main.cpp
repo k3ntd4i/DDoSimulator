@@ -22,6 +22,10 @@ int main()
 
     sf::Texture texture_background{};
     sf::Sprite sprite_background{};
+
+    //Textura y contenedor para las yuca coins
+    sf::Texture coin_texture{};
+    sf::CircleShape circle_coin_container{};
     
     sf::Font font{};
 
@@ -31,6 +35,7 @@ int main()
     {
         initialize_map(texture_background, sprite_background);
         initialize_font(font);
+        
     }
     catch (const std::runtime_error &error)
     {
@@ -42,11 +47,16 @@ int main()
     sf::Text countdown_text{};
     sf::Text command_required_text{}; // palabras aleatorias
     sf::Text input_command_text{}; // input del usuario
+    sf::Text coin_text{};
+    int yuca_quantity{0}; //variable temporal para cuando ya tengamos la variable yuca_coins
 
     initialize_progress_bar_text(font, progress_bar_text);
     initialize_time_text(font, countdown_text);
     initialize_console_text(font, command_required_text);
     initialize_console_input_text(font, input_command_text);
+    initialize_coins(yuca_quantity ,font, coin_text, circle_coin_container, coin_texture);
+
+    
 
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
     sf::RectangleShape console{ sf::Vector2f{640.f, 360.f} };
@@ -114,6 +124,8 @@ int main()
 
         window.clear(sf::Color::Black);
         window.draw(sprite_background);
+        window.draw(circle_coin_container);
+        window.draw(coin_text);
 
         // For para dibujar los nodos de la compañia
         for (int i{0}; i < company_network.size(); ++i)

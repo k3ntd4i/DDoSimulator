@@ -25,3 +25,12 @@ void initialize_console_window
     sf::RectangleShape &console,
     sf::RectangleShape &text_field
 );
+
+void initialize_coins
+(   
+    int &yuca_quantity,
+    sf::Font &font,
+    sf::Text &coin_text, 
+    sf::CircleShape &circle_coin_container, 
+    sf::Texture &coin_texture
+);
