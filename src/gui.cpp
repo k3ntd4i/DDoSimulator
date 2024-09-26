@@ -41,7 +41,36 @@ void popup_console_window
 {
     // Palabras random
     command_required_text.setString(command_required);
-    command_required_text.setPosition(640 - (command_required_text.getGlobalBounds().width / 2), 270.f);
+
+    Lista<int> index_spaces; //Lista que guarda los indices de los espacios que haya en command_required
+    int spaces_count{0}; // Este entero sirve de indice para meter elementos en la lista de Omar
+    for (int i{0}; i < command_required.length(); ++i)
+    {
+        if (command_required[i] == ' ')
+        {
+            index_spaces.insert(spaces_count, i);
+            spaces_count += 1;
+        }
+    }
+
+    int linejump_insert_index{}; //Este entero selecciona un indice del command_requiered para meter \n
+    if (index_spaces.length() % 2 == 0)
+    {
+        linejump_insert_index = index_spaces.get((index_spaces.length() / 2));
+        
+    }
+    else
+    {
+        linejump_insert_index = index_spaces.get((index_spaces.length() / 2) - 0.5);
+    }
+
+    std::string command_required_copy{command_required};
+    if (command_required_text.getGlobalBounds().width > 580.f)
+    {
+        command_required_copy[linejump_insert_index] = '\n';
+        command_required_text.setString(command_required_copy);
+        command_required_text.setPosition(640 - (command_required_text.getGlobalBounds().width / 2), 230.f);
+    }
 
     input_command_text.setString(user_input);
     input_command_text.setPosition(640 - (input_command_text.getGlobalBounds().width / 2), 335.f);
