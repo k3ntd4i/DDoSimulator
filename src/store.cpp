@@ -51,16 +51,16 @@ Store::Store() {
 
 void Store::initialize_power_tree() {
    
-    power_tree.insert(Product("Root Power uwu", "The base power", 75)); 
-    power_tree.insert(Product("Left Branch 1", "First left power", 50));
-    power_tree.insert(Product("Right Branch 1", "First right power", 150));
-    power_tree.insert(Product("Left Branch 2-1", "Second level left power", 25));
-    power_tree.insert(Product("Left Branch 2-2", "Second level left power", 75));
-    power_tree.insert(Product("Right Branch 2-1", "Second level right power", 125));
-    power_tree.insert(Product("Right Branch 2-2", "Second level right power", 175));
-    power_tree.insert(Product("Left Branch 3-1", "Third level left power", 12));
-    power_tree.insert(Product("Left Branch 3-2", "Third level left power", 37));
-    power_tree.insert(Product("Left Branch 3-3", "Third level left power", 62));
+    power_tree.insert(Product("Exploit Enhancer", "Increases attack power by 1 and reduces the number of required console commands by 1.", 10)); 
+    power_tree.insert(Product("Firewall Bypass", "Removes 1 word from the terminal.", 7));
+    power_tree.insert(Product("Code Injection", "Removes 1 word from the terminal.", 5));
+    power_tree.insert(Product("Packet Sniffer", "Removes 1 word from the terminal.", 4));
+    power_tree.insert(Product("Rootkit Reducer", "Removes 1 word from the terminal.", 6));
+    power_tree.insert(Product("Malware Minimizer", "Removes 1 word from the terminal.", 8));
+    power_tree.insert(Product("DDoS Amplifier", "Increases attack power by 5.", 13));
+    power_tree.insert(Product("Zero-Day Surge", "Increases attack power by 12.", 12));
+    power_tree.insert(Product("Brute Force Multiplier", "Increases attack power by 24.", 11));
+    power_tree.insert(Product("Ultimate Exploit", "Increases attack power by 50.", 38));
 }
 
 bool Store::initialize_store_icon() {
