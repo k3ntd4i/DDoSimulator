@@ -7,6 +7,7 @@
 #include <iostream>
 #include <optional>
 
+
 class Product {
 private:
     std::string name{};
@@ -38,10 +39,15 @@ private:
     ArbolBusquedaBinaria<Product> power_tree{};
     sf::Texture store_icon_texture{};
     sf::Sprite store_icon_sprite{};
-    bool _is_store_open{false};  // Renamed member variable
+    bool _is_store_open{false};  
 
     void initialize_power_tree();
     void draw_power_tree(sf::RenderWindow& window);
+    void draw_binary_tree_recursively(sf::RenderWindow& window, ArbolBinario<Product>* node, 
+                                  sf::Vector2f position, float offset_x, const sf::Font& font);
+
+    void draw_binary_tree(sf::RenderWindow& window, ArbolBusquedaBinaria<Product>& tree, const sf::Font& font);
+
 
 public:
     Store();
