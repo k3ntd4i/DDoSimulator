@@ -76,8 +76,6 @@ void initialize_console_window
 
     text_field.setPosition(350.f, 340.f);
     text_field.setFillColor(sf::Color::White);
-    // text_field.setOutlineColor(sf::Color::White);
-    // text_field.setOutlineThickness(-2.f);
 }
 
 void initialize_words(std::string *array_words)
@@ -195,4 +193,23 @@ void initialize_coins
     coin_text.setString( std::to_string(yuca_quantity) );
     coin_text.setPosition( 1168 - (coin_text.getGlobalBounds().width / 2), 628.f );
 
+}
+
+void initialize_anonymity
+(   
+    int anonymity,
+    sf::Sprite &anonymity_sprite, 
+    sf::Texture &anonymity_texture
+)
+{
+    if (!anonymity_texture.loadFromFile(R"(assets\images\anonymity_texture.png)"))
+    {
+        throw std::runtime_error{ "The anonymity texture could not be loaded." };
+    }
+
+    anonymity_sprite.setTexture( anonymity_texture );
+    anonymity_sprite.setScale(0.35f, 0.35f);
+    anonymity_sprite.setTextureRect(sf::IntRect(240 * anonymity, 0, 240, 196));
+    anonymity_sprite.setPosition(1166.f, 25.f);
+    
 }

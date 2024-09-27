@@ -15,3 +15,4 @@ void popup_console_window
     sf::Text &command_required_text,
     sf::Text &input_command_text
 );
+
