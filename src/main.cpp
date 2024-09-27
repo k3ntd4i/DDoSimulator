@@ -25,11 +25,11 @@ int main()
     sf::Texture texture_background{};
     sf::Sprite sprite_background{};
 
-    //Textura y contenedor para las yuca coins
+    // Textura y contenedor para las yuca coins
     sf::Texture coin_texture{};
     sf::CircleShape circle_coin_container{};
-    
-    //Textura y contener para anonimato
+
+    // Textura y contener para anonimato
     sf::Texture anonymity_texture{};
     sf::Sprite anonymity_sprite{};
     sf::Font font{};
@@ -78,17 +78,7 @@ int main()
     sf::Time countdown_time{ sf::seconds(120.0f) };
     sf::Clock countdown_clock{};
 
-<<<<<<< HEAD
-    User user{};
     Gameplay gameplay_status{};
-=======
-    TablaHash<Company*> companies{ 53 };
-    GrafoSimple<sf::CircleShape*> company_network{ 22 };
-
-    initialize_company_network(company_network);
-
-    CompanyCounter company_counter{};
->>>>>>> gui
 
     Cola<std::string> extracted_words{};
     std::string user_input{};
@@ -136,7 +126,6 @@ int main()
 
             if (click_flag)
             {
-<<<<<<< HEAD
                 command_required = get_command
                 (
                     gameplay_status.get_amount_words(),
@@ -145,9 +134,6 @@ int main()
                     gameplay_status.get_hard(),
                     gameplay_status.get_extreme()
                 );
-=======
-                command_required = get_command(6, extracted_words, array_words, true, true);
->>>>>>> gui
             }
         }
 
@@ -169,6 +155,8 @@ int main()
 
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
+
+        anonymity_sprite.setTextureRect(sf::IntRect(240 * user.get_anonymity(), 0, 240, 196));
 
         window.clear(sf::Color::Black);
         window.draw(sprite_background);

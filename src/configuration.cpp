@@ -196,7 +196,7 @@ void initialize_coins
 }
 
 void initialize_anonymity
-(   
+(
     int anonymity,
     sf::Sprite &anonymity_sprite, 
     sf::Texture &anonymity_texture
@@ -211,5 +211,4 @@ void initialize_anonymity
     anonymity_sprite.setScale(0.35f, 0.35f);
     anonymity_sprite.setTextureRect(sf::IntRect(240 * anonymity, 0, 240, 196));
     anonymity_sprite.setPosition(1166.f, 25.f);
-    
 }
