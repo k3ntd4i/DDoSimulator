@@ -3,7 +3,7 @@
 class Gameplay
 {
     int company_counter{ 0 };
-    int amount_words{ 3 };
+    int amount_words{ 9 };
     bool hard{ false };
     bool extreme{ false };
 

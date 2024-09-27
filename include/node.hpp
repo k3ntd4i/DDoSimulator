@@ -22,7 +22,7 @@ public:
         , successfully_attacked{ false }
         , just_attacked{ false }
     {
-        node.setOrigin(15.f, 15.f);
+        node.setOrigin(11.f, 11.f);
         node.setRadius(11);
         node.setFillColor(sf::Color::Black);
         node.setOutlineColor(sf::Color::White);

@@ -11,6 +11,9 @@ void initialize_window(sf::RenderWindow &window)
     window.setVerticalSyncEnabled(true);
 }
 
+/**
+ * @throw std::runtime_error si el asset necesario no fue encontrado
+ */
 void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_background)
 {
     if (!texture_background.loadFromFile(R"(assets\images\map.png)"))
@@ -23,6 +26,9 @@ void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_backgrou
     sprite_background.setPosition(112.f, 76.f);
 }
 
+/**
+ * @throw std::runtime_error si el asset necesario no fue encontrado
+ */
 void initialize_font(sf::Font &font)
 {
     if (!font.loadFromFile(R"(assets\fonts\digital.TTF)"))
@@ -78,6 +84,9 @@ void initialize_console_window
     text_field.setFillColor(sf::Color::White);
 }
 
+/**
+ * @throw std::runtime_error si la data necesaria no fue encontrada
+ */
 void initialize_words(std::string *array_words)
 {
     std::ifstream file{ R"(data\words.txt)" };
@@ -94,6 +103,9 @@ void initialize_words(std::string *array_words)
     }
 }
 
+/**
+ * @throw std::runtime_error si la data necesaria no fue encontrada
+ */
 void initialize_companies_with_network(TablaHash<Company*> &companies, GrafoSimple<Node*> &company_network)
 {
     std::ifstream file{ R"(data\company_names.txt)" };
@@ -168,12 +180,15 @@ void initialize_companies_with_network(TablaHash<Company*> &companies, GrafoSimp
     }
 }
 
+/**
+ * @throw std::runtime_error si el asset necesario no fue encontrado
+ */
 void initialize_coins
-(   
-    int &yuca_quantity,
+(
+    int yuca_quantity,
     sf::Font &font,
-    sf::Text &coin_text, 
-    sf::CircleShape &circle_coin_container, 
+    sf::Text &coin_text,
+    sf::CircleShape &circle_coin_container,
     sf::Texture &coin_texture
 )
 {
@@ -195,10 +210,13 @@ void initialize_coins
 
 }
 
+/**
+ * @throw std::runtime_error si el asset necesario no fue encontrado
+ */
 void initialize_anonymity
 (
     int anonymity,
-    sf::Sprite &anonymity_sprite, 
+    sf::Sprite &anonymity_sprite,
     sf::Texture &anonymity_texture
 )
 {
@@ -209,6 +227,6 @@ void initialize_anonymity
 
     anonymity_sprite.setTexture( anonymity_texture );
     anonymity_sprite.setScale(0.35f, 0.35f);
-    anonymity_sprite.setTextureRect(sf::IntRect(240 * anonymity, 0, 240, 196));
+    anonymity_sprite.setTextureRect(sf::IntRect(0, 0, 240, 196));
     anonymity_sprite.setPosition(1166.f, 25.f);
 }

@@ -34,6 +34,8 @@ int main()
     sf::Sprite anonymity_sprite{};
     sf::Font font{};
 
+    sf::Text coin_text{};
+
     User user{};
 
     std::string *array_words{ new std::string[2000]{} };
@@ -47,9 +49,9 @@ int main()
         initialize_map(texture_background, sprite_background);
         initialize_words(array_words);
         initialize_font(font);
+        initialize_coins(user.get_yuca_coins() ,font, coin_text, circle_coin_container, coin_texture);
         initialize_companies_with_network(companies, company_network);
     }
-
     catch (const std::runtime_error &error)
     {
         std::cerr << "Error in initialization. " << error.what();
@@ -60,14 +62,11 @@ int main()
     sf::Text countdown_text{};
     sf::Text command_required_text{}; // palabras aleatorias
     sf::Text input_command_text{}; // input del usuario
-    sf::Text coin_text{};
-    int yuca_quantity{0}; //variable temporal para cuando ya tengamos la variable yuca_coins
 
     initialize_progress_bar_text(font, progress_bar_text);
     initialize_time_text(font, countdown_text);
     initialize_console_text(font, command_required_text);
     initialize_console_input_text(font, input_command_text);
-    initialize_coins(yuca_quantity ,font, coin_text, circle_coin_container, coin_texture);
 
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
     sf::RectangleShape console{ sf::Vector2f{640.f, 360.f} };
@@ -145,18 +144,16 @@ int main()
             if (is_input_command_correct(user_input, extracted_words))
             {
                 std::cout << "\nCorrecto!\n";
-                user_succeeds_attack(user, company_network, companies, gameplay_status, company_index);
+                user_succeeds_attack(user, coin_text, company_network, companies, gameplay_status, company_index);
             }
             else
             {
                 std::cout << "\nInorrecto!\n";
-                user_fails_attack(user, company_network, company_index);
+                user_fails_attack(user, anonymity_sprite, company_network, company_index);
             }
 
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
-
-        anonymity_sprite.setTextureRect(sf::IntRect(240 * user.get_anonymity(), 0, 240, 196));
 
         window.clear(sf::Color::Black);
         window.draw(sprite_background);
@@ -169,7 +166,7 @@ int main()
         {
             Node *temporal_node{ company_network.get_element(i) };
 
-            if (temporal_node->was_just_attacked() && temporal_node->get_elapsed_seconds() >= 3.f)
+            if (temporal_node->was_just_attacked())
             {
                 if (temporal_node->is_infected())
                 {
@@ -177,7 +174,7 @@ int main()
                     temporal_node->set_status_available(false);
                     temporal_node->set_was_just_attacked(false);
                 }
-                else
+                else if (temporal_node->get_elapsed_seconds() >= 5.f)
                 {
                     temporal_node->get_circle().setFillColor(sf::Color::White);
                     temporal_node->get_circle().setOutlineColor(sf::Color::White);
@@ -186,6 +183,7 @@ int main()
                     temporal_node->set_was_just_attacked(false);
                 }
             }
+
             window.draw(company_network.get_element(i)->get_circle());
         }
 
@@ -203,7 +201,7 @@ int main()
         }
         else if (click_flag)
         {
-            user_fails_attack(user, company_network, company_index);
+            user_fails_attack(user, anonymity_sprite, company_network, company_index);
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 

@@ -47,11 +47,14 @@ void clear_conditional_objects
 void user_fails_attack
 (
     User &user,
+    sf::Sprite &anonymity_sprite,
     GrafoSimple<Node*> &company_network,
     int company_index
 )
 {
     user.decrease_anonymity();
+    anonymity_sprite.setTextureRect(sf::IntRect(240 * user.get_anonymity(), 0, 240, 196));
+
     if (user.was_captured())
     {
         std::cout << "\nHA SIDO CAPTURADO BRO, RIP!!!11\n";
@@ -71,6 +74,7 @@ void user_fails_attack
 void user_succeeds_attack
 (
     User &user,
+    sf::Text &coin_text,
     GrafoSimple<Node*> &company_network,
     TablaHash<Company*> &companies,
     Gameplay &gameplay_status,
@@ -82,16 +86,22 @@ void user_succeeds_attack
     Company *company{ companies.search(node->get_company_name()) };
     company->update_integrity(user.get_hack_intensity(), gameplay_status);
 
+    if (!company->is_active())
+    {
+        user.update_yuca_coins_wallet(6);
+    }
+
     if (gameplay_status.get_company_counter() == 22)
     {
         std::cout << "\nHAS HACKEADO EL PLANETA BRO, EPIC WIN!!!!111\n";
     }
 
-    user.update_yuca_coins_wallet(6);
+    coin_text.setString( std::to_string(user.get_yuca_coins()) );
 
     node->set_attack_result(true);
     node->set_status_infected(!company->is_active());
 
+    node->get_circle().setOutlineThickness(-3);
     node->get_circle().setOutlineColor(sf::Color{ 0, 190, 0 });
     node->set_was_just_attacked(true);
     node->set_status_available(false);

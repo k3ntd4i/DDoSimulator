@@ -29,16 +29,16 @@ void initialize_console_window
 );
 
 void initialize_coins
-(   
-    int &yuca_quantity,
+(
+    int yuca_quantity,
     sf::Font &font,
-    sf::Text &coin_text, 
+    sf::Text &coin_text,
     sf::CircleShape &circle_coin_container, 
     sf::Texture &coin_texture
 );
 
 void initialize_anonymity
-(   
+(
     int anonymity,
     sf::Sprite &anonymity_sprite, 
     sf::Texture &anonymity_texture

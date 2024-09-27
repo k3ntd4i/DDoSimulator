@@ -32,6 +32,7 @@ void clear_conditional_objects
 void user_fails_attack
 (
     User &user,
+    sf::Sprite &anonymity_sprite,
     GrafoSimple<Node*> &company_network,
     int company_index
 );
@@ -39,6 +40,7 @@ void user_fails_attack
 void user_succeeds_attack
 (
     User &user,
+    sf::Text &coin_text,
     GrafoSimple<Node*> &company_network,
     TablaHash<Company*> &companies,
     Gameplay &gameplay_status,
