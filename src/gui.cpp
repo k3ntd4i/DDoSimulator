@@ -1,5 +1,12 @@
 #include "../include/gui.hpp"
 
+
+void draw_life(sf::Texture &anonimity_texture, int &anonymity)
+{
+
+}
+
+
 void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_text) 
 {
     int infected{ 0 };

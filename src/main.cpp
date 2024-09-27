@@ -28,17 +28,24 @@ int main()
     sf::Texture coin_texture{};
     sf::CircleShape circle_coin_container{};
     
+    //Textura y contener para anonimato
+    sf::Texture anonymity_texture{};
+    sf::Sprite anonymity_sprite{};
     sf::Font font{};
+
+    User user{};
 
     std::string *array_words{ new std::string[2000]{} };
 
     try
     {
+        initialize_anonymity(user.get_anonymity(), anonymity_sprite, anonymity_texture);
         initialize_map(texture_background, sprite_background);
         initialize_words(array_words);
         initialize_font(font);
         
     }
+
     catch (const std::runtime_error &error)
     {
         std::cerr << "Error in initialization. " << error.what();
@@ -74,7 +81,6 @@ int main()
 
     initialize_company_network(company_network);
 
-    User user{};
     CompanyCounter company_counter{};
 
     Cola<std::string> extracted_words{};
@@ -122,7 +128,7 @@ int main()
 
             if (click_flag)
             {
-                command_required = get_command(6, extracted_words, array_words, false, false);
+                command_required = get_command(6, extracted_words, array_words, true, true);
             }
         }
 
@@ -155,6 +161,7 @@ int main()
 
         window.clear(sf::Color::Black);
         window.draw(sprite_background);
+        window.draw(anonymity_sprite);
         window.draw(circle_coin_container);
         window.draw(coin_text);
 

@@ -34,3 +34,10 @@ void initialize_coins
     sf::CircleShape &circle_coin_container, 
     sf::Texture &coin_texture
 );
+
+void initialize_anonymity
+(   
+    int anonymity,
+    sf::Sprite &anonymity_sprite, 
+    sf::Texture &anonymity_texture
+);
