@@ -39,39 +39,45 @@ void popup_console_window
     sf::Text &input_command_text
 )
 {
-    // Palabras random
-    command_required_text.setString(command_required);
-
-    Lista<int> index_spaces; //Lista que guarda los indices de los espacios que haya en command_required
-    int spaces_count{0}; // Este entero sirve de indice para meter elementos en la lista de Omar
-    for (int i{0}; i < command_required.length(); ++i)
+    Lista<std::string> words{};
+    std::string build_word{};
+    int index_insert{0};
+    for (int i = 0; i <= command_required.length(); ++i)
     {
-        if (command_required[i] == ' ')
+        if (i == command_required.length() || command_required[i] == ' ')
         {
-            index_spaces.insert(spaces_count, i);
-            spaces_count += 1;
+            words.insert(index_insert, build_word);
+            build_word.clear();
+            ++index_insert;   
+        }
+        else
+        {
+            build_word += command_required[i];
         }
     }
 
-    int linejump_insert_index{}; //Este entero selecciona un indice del command_requiered para meter \n
-    if (index_spaces.length() % 2 == 0)
-    {
-        linejump_insert_index = index_spaces.get((index_spaces.length() / 2));
-        
-    }
-    else
-    {
-        linejump_insert_index = index_spaces.get((index_spaces.length() / 2) - 0.5);
-    }
+    float text_heigth{265.f};
+    int temporal_space_index{0};
+    std::string command_required_copy{};
 
-    std::string command_required_copy{command_required};
-    if (command_required_text.getGlobalBounds().width > 580.f)
+    for (int i{0}; i < words.size(); ++i)
     {
-        command_required_copy[linejump_insert_index] = '\n';
+        command_required_copy += words.get(i);
         command_required_text.setString(command_required_copy);
-        command_required_text.setPosition(640 - (command_required_text.getGlobalBounds().width / 2), 230.f);
+        if (command_required_text.getGlobalBounds().width < 580.f)
+        {
+            command_required_copy += ' ';
+        }
+        else
+        {
+            command_required_copy[command_required_copy.find_last_of(' ')] = '\n';
+            command_required_copy += ' ';
+            text_heigth -= 40;
+        }
     }
+    command_required_text.setString(command_required_copy);
 
+    command_required_text.setPosition(640 - (command_required_text.getGlobalBounds().width / 2), text_heigth);
     input_command_text.setString(user_input);
     input_command_text.setPosition(640 - (input_command_text.getGlobalBounds().width / 2), 335.f);
 }
