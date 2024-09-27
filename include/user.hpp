@@ -10,10 +10,10 @@ class User
 public:
     User() = default;
 
-    int get_anonymity() { return this->anonymity; }
-    int get_yuca_coins() { return this->yuca_coins; }
-    int get_hack_intensity() { return this->hack_intensity; }
-    bool was_captured() { return this->captured; }
+    int get_anonymity() { return anonymity; }
+    int get_yuca_coins() { return yuca_coins; }
+    int get_hack_intensity() { return hack_intensity; }
+    bool was_captured() { return captured; }
     void increase_hack_intensity(int new_intesity) { this->hack_intensity += new_intesity; }
     void update_yuca_coins_wallet(int cash_flow) { this->yuca_coins += cash_flow; }
 

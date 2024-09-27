@@ -2,7 +2,8 @@
 #include "../include/gui.hpp"
 #include "../include/timmer.hpp"
 #include "../include/company.hpp"
-#include "../include/company_counter.hpp"
+#include "../include/node.hpp"
+#include "../include/gameplay.hpp"
 #include "../include/user.hpp"
 #include "../include/actions.hpp"
 #include "../include/puzzle.hpp"
@@ -32,12 +33,14 @@ int main()
 
     std::string *array_words{ new std::string[2000]{} };
 
+    GrafoSimple<Node*> company_network{ 22 };
+
     try
     {
         initialize_map(texture_background, sprite_background);
         initialize_words(array_words);
         initialize_font(font);
-        
+        initialize_company_network(company_network);
     }
     catch (const std::runtime_error &error)
     {
@@ -58,8 +61,6 @@ int main()
     initialize_console_input_text(font, input_command_text);
     initialize_coins(yuca_quantity ,font, coin_text, circle_coin_container, coin_texture);
 
-    
-
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
     sf::RectangleShape console{ sf::Vector2f{640.f, 360.f} };
     sf::RectangleShape text_field{ sf::Vector2f{580.f, 50.f} };
@@ -70,12 +71,11 @@ int main()
     sf::Clock countdown_clock{};
 
     TablaHash<Company*> companies{ 53 };
-    GrafoSimple<sf::CircleShape*> company_network{ 22 };
 
-    initialize_company_network(company_network);
+    initialize_companies(companies);
 
     User user{};
-    CompanyCounter company_counter{};
+    Gameplay gameplay_status{};
 
     Cola<std::string> extracted_words{};
     std::string user_input{};
@@ -122,7 +122,14 @@ int main()
 
             if (click_flag)
             {
-                command_required = get_command(6, extracted_words, array_words, true, true);
+                command_required = get_command
+                (
+                    gameplay_status.get_amount_words(),
+                    extracted_words,
+                    array_words,
+                    gameplay_status.get_hard(),
+                    gameplay_status.get_extreme()
+                );
             }
         }
 
@@ -148,9 +155,7 @@ int main()
                 }
             }
 
-            clear_extracted_words(extracted_words);
-            click_flag = false;
-            user_input = "";
+            clear_conditional_objects(extracted_words, click_flag, user_input);
         }
 
         window.clear(sf::Color::Black);
@@ -161,7 +166,9 @@ int main()
         // For para dibujar los nodos de la compañia
         for (int i{0}; i < company_network.size(); ++i)
         {
-            window.draw(*(company_network.get_element(i)));
+            // Node *temporal_node{ company_network.get_element(i) };
+            // if (temporal_node->was_successfully_attacked() &&  temporal_node->get_elapsed_seconds() < 2)
+            window.draw(company_network.get_element(i)->get_circle());
         }
 
         draw_bar(window, progress_bar_text);
@@ -178,9 +185,7 @@ int main()
         }
         else if (click_flag)
         {
-            clear_extracted_words(extracted_words);
-            click_flag = false;
-            user_input = "";
+            clear_conditional_objects(extracted_words, click_flag, user_input);
         }
 
         window.display();

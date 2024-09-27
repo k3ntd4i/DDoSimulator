@@ -2,7 +2,8 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
-#include "../include/estructuras/lista.hpp";
+#include "../include/estructuras/lista.hpp"
+#include <string>
 
 void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_textt);
 

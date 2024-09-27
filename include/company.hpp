@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/company_counter.hpp"
+#include "../include/gameplay.hpp"
 #include <string>
 #include <string_view>
 
@@ -18,7 +18,7 @@ public:
     {
     }
 
-    void update_integrity(int damage, CompanyCounter &company_counter);
+    void update_integrity(int damage, Gameplay &gameplay_status);
 
     std::string_view get_name() { return this->name; }
     int get_integrity() { return this->integriy; }

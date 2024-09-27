@@ -96,19 +96,75 @@ void initialize_words(std::string *array_words)
     }
 }
 
-void initialize_company_network(GrafoSimple<sf::CircleShape*> &company_network)
+void initialize_company_network(GrafoSimple<Node*> &company_network)
 {
-    sf::CircleShape *circle{};
-    for (int i{0}; i < 5; ++i)
+    for (int i{0}; i < 22; ++i)
     {
-        circle = new sf::CircleShape{};
-
-        circle->setRadius(50);
-        circle->setPosition(100 * (i + 5), 200);
-        circle->setFillColor(sf::Color::Green);
-
-        company_network.set_node(i, circle);
+        company_network.set_node(i, new Node{});
     }
+
+    std::ifstream file{ R"(data\coordinates.txt)" };
+
+    if (!file)
+    {
+        throw std::runtime_error{ "Coordinates could not be initialized." };
+    }
+
+    std::string line{};
+    float x{};
+    float y{};
+    for (int i{0}; std::getline(file, line); ++i)
+    {
+        std::stringstream stream{ line };
+        stream >> x >> y;
+        company_network.get_element(i)->get_circle().setPosition(x, y);
+    }
+
+    company_network.update_edge(0, 5, true);
+    company_network.update_edge(0, 1, true);
+    company_network.update_edge(1, 4, true);
+    company_network.update_edge(2, 6, true);
+    company_network.update_edge(2, 7, true);
+    company_network.update_edge(2, 8, true);
+    company_network.update_edge(3, 4, true);
+    company_network.update_edge(3, 9, true);
+    company_network.update_edge(3, 10, true);
+    company_network.update_edge(4, 5, true);
+    company_network.update_edge(5, 6, true);
+    company_network.update_edge(6, 7, true);
+    company_network.update_edge(6, 12, true);
+    company_network.update_edge(7, 8, true);
+    company_network.update_edge(8, 20, true);
+    company_network.update_edge(9, 10, true);
+    company_network.update_edge(9, 11, true);
+    company_network.update_edge(10, 13, true);
+    company_network.update_edge(11, 12, true);
+    company_network.update_edge(11, 14, true);
+    company_network.update_edge(12, 15, true);
+    company_network.update_edge(13, 16, true);
+    company_network.update_edge(13, 17, true);
+    company_network.update_edge(16, 17, true);
+    company_network.update_edge(17, 18, true);
+    company_network.update_edge(17, 21, true);
+    company_network.update_edge(21, 18, true);
+    company_network.update_edge(21, 20, true);
+    company_network.update_edge(14, 15, true);
+    company_network.update_edge(14, 19, true);
+    company_network.update_edge(15, 19, true);
+    company_network.update_edge(20, 19, true);
+
+    for (int i{0}; i < 4; ++i)
+    {
+        Node *initial_node{ company_network.get_element(select::from_range(0, 21)) };
+        initial_node->get_circle().setFillColor(sf::Color::White);
+
+        initial_node->set_status_available(true);
+    }
+}
+
+void initialize_companies(TablaHash<Company*> &companies)
+{
+    
 }
 
 void initialize_coins
