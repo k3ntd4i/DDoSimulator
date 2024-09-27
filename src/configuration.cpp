@@ -106,70 +106,47 @@ void initialize_words(std::string *array_words)
 /**
  * @throw std::runtime_error si la data necesaria no fue encontrada
  */
-void initialize_companies_with_network(TablaHash<Company*> &companies, GrafoSimple<Node*> &company_network)
+void initialize_companies_and_network(TablaHash<Company*> &companies, GrafoSimple<Node*> &company_network)
 {
-    std::ifstream file{ R"(data\company_names.txt)" };
+    std::ifstream file_names{ R"(data\company_names.txt)" };
 
-    if (!file)
+    if (!file_names)
     {
         throw std::runtime_error{ "Company names could not be initialized." };
     }
 
-    std::string name{};
-    for (int i{0}; std::getline(file, name); ++i)
-    {
-        companies.insert(name, new Company{});
-        company_network.set_node(i, new Node{ name });
-    }
+    std::ifstream file_graph{ R"(data\coordinates.txt)" };
 
-    file.close();
-
-    file.open(R"(data\coordinates.txt)");
-
-    if (!file)
+    if (!file_graph)
     {
         throw std::runtime_error{ "Coordinates could not be initialized." };
     }
 
     float x{};
     float y{};
-    for (int i{0}; file >> x >> y; ++i)
+    std::string name{};
+    for (int i{0}; i < 22; ++i)
     {
+        std::getline(file_names, name);
+        file_graph >> x >> y;
+
+        companies.insert(name, new Company{});
+        company_network.set_node(i, new Node{ name });
         company_network.get_element(i)->get_circle().setPosition(x, y);
     }
 
-    company_network.update_edge(0, 5, true);
-    company_network.update_edge(0, 1, true);
-    company_network.update_edge(1, 4, true);
-    company_network.update_edge(2, 6, true);
-    company_network.update_edge(2, 7, true);
-    company_network.update_edge(2, 8, true);
-    company_network.update_edge(3, 4, true);
-    company_network.update_edge(3, 9, true);
-    company_network.update_edge(3, 10, true);
-    company_network.update_edge(4, 5, true);
-    company_network.update_edge(5, 6, true);
-    company_network.update_edge(6, 7, true);
-    company_network.update_edge(6, 12, true);
-    company_network.update_edge(7, 8, true);
-    company_network.update_edge(8, 20, true);
-    company_network.update_edge(9, 10, true);
-    company_network.update_edge(9, 11, true);
-    company_network.update_edge(10, 13, true);
-    company_network.update_edge(11, 12, true);
-    company_network.update_edge(11, 14, true);
-    company_network.update_edge(12, 15, true);
-    company_network.update_edge(13, 16, true);
-    company_network.update_edge(13, 17, true);
-    company_network.update_edge(16, 17, true);
-    company_network.update_edge(17, 18, true);
-    company_network.update_edge(17, 21, true);
-    company_network.update_edge(21, 18, true);
-    company_network.update_edge(21, 20, true);
-    company_network.update_edge(14, 15, true);
-    company_network.update_edge(14, 19, true);
-    company_network.update_edge(15, 19, true);
-    company_network.update_edge(20, 19, true);
+    file_graph.close();
+    file_graph.open( R"(data\graph_edges.txt)" );
+
+    if (!file_graph)
+    {
+        throw std::runtime_error{ "The edges of the graph could not be initialized." };
+    }
+
+    for (int i{0}; file_graph >> x >> y; ++i)
+    {
+        company_network.update_edge(x, y, true);
+    }
 
     for (int i{0}; i < 4; ++i)
     {
@@ -213,12 +190,7 @@ void initialize_coins
 /**
  * @throw std::runtime_error si el asset necesario no fue encontrado
  */
-void initialize_anonymity
-(
-    int anonymity,
-    sf::Sprite &anonymity_sprite,
-    sf::Texture &anonymity_texture
-)
+void initialize_anonymity(int anonymity, sf::Sprite &anonymity_sprite, sf::Texture &anonymity_texture)
 {
     if (!anonymity_texture.loadFromFile(R"(assets\images\anonymity_texture.png)"))
     {
@@ -227,6 +199,6 @@ void initialize_anonymity
 
     anonymity_sprite.setTexture( anonymity_texture );
     anonymity_sprite.setScale(0.35f, 0.35f);
-    anonymity_sprite.setTextureRect(sf::IntRect(0, 0, 240, 196));
+    anonymity_sprite.setTextureRect(sf::IntRect(240 * anonymity, 0, 240, 196));
     anonymity_sprite.setPosition(1166.f, 25.f);
 }

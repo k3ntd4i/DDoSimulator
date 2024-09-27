@@ -50,7 +50,7 @@ int main()
         initialize_words(array_words);
         initialize_font(font);
         initialize_coins(user.get_yuca_coins() ,font, coin_text, circle_coin_container, coin_texture);
-        initialize_companies_with_network(companies, company_network);
+        initialize_companies_and_network(companies, company_network);
     }
     catch (const std::runtime_error &error)
     {

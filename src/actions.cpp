@@ -89,14 +89,13 @@ void user_succeeds_attack
     if (!company->is_active())
     {
         user.update_yuca_coins_wallet(6);
+        coin_text.setString( std::to_string(user.get_yuca_coins()) );
     }
 
     if (gameplay_status.get_company_counter() == 22)
     {
         std::cout << "\nHAS HACKEADO EL PLANETA BRO, EPIC WIN!!!!111\n";
     }
-
-    coin_text.setString( std::to_string(user.get_yuca_coins()) );
 
     node->set_attack_result(true);
     node->set_status_infected(!company->is_active());
