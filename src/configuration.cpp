@@ -16,7 +16,7 @@ void initialize_window(sf::RenderWindow &window)
  */
 void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_background)
 {
-    if (!texture_background.loadFromFile(R"(assets\images\map.png)"))
+    if (!texture_background.loadFromFile(R"(assets\images\map_edges.png)"))
     {
         throw std::runtime_error{ "The background could not be loaded." };
     }
@@ -73,10 +73,10 @@ void initialize_console_window
 )
 {
     translucent_background.setPosition(0, 0);
-    translucent_background.setFillColor(sf::Color(0, 25, 0, 100));
+    translucent_background.setFillColor(sf::Color{ 0, 25, 0, 100 });
 
     console.setPosition(320.f, 180.f);
-    console.setFillColor(sf::Color(0, 0, 0));
+    console.setFillColor(sf::Color{ 0, 0, 0 });
     console.setOutlineColor(sf::Color::White);
     console.setOutlineThickness(-1.f);
 
@@ -183,8 +183,7 @@ void initialize_coins
     coin_text.setFillColor(sf::Color::White);
 
     coin_text.setString( std::to_string(yuca_quantity) );
-    coin_text.setPosition( 1168 - (coin_text.getGlobalBounds().width / 2), 628.f );
-
+    coin_text.setPosition( 1168.f - (coin_text.getGlobalBounds().width / 2.f), 628.f );
 }
 
 /**

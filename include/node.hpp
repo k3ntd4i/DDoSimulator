@@ -22,11 +22,11 @@ public:
         , successfully_attacked{ false }
         , just_attacked{ false }
     {
-        node.setOrigin(11.f, 11.f);
-        node.setRadius(11);
+        node.setOrigin(16.f, 16.f);
+        node.setRadius(11.f);
         node.setFillColor(sf::Color::Black);
         node.setOutlineColor(sf::Color::White);
-        node.setOutlineThickness(-3);
+        node.setOutlineThickness(-3.f);
     }
 
     sf::CircleShape &get_circle() { return node; }

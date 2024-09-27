@@ -69,8 +69,8 @@ int main()
     initialize_console_input_text(font, input_command_text);
 
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
-    sf::RectangleShape console{ sf::Vector2f{640.f, 360.f} };
-    sf::RectangleShape text_field{ sf::Vector2f{580.f, 50.f} };
+    sf::RectangleShape console{ sf::Vector2f{ 640.f, 360.f } };
+    sf::RectangleShape text_field{ sf::Vector2f{ 580.f, 50.f } };
 
     initialize_console_window(translucent_background, console, text_field);
 
@@ -170,6 +170,7 @@ int main()
             {
                 if (temporal_node->is_infected())
                 {
+                    temporal_node->get_circle().setOutlineThickness(0.f);
                     temporal_node->get_circle().setFillColor(sf::Color::Green);
                     temporal_node->set_status_available(false);
                     temporal_node->set_was_just_attacked(false);
@@ -178,7 +179,6 @@ int main()
                 {
                     temporal_node->get_circle().setFillColor(sf::Color::White);
                     temporal_node->get_circle().setOutlineColor(sf::Color::White);
-                    temporal_node->get_circle().setOutlineThickness(0);
                     temporal_node->set_status_available(true);
                     temporal_node->set_was_just_attacked(false);
                 }

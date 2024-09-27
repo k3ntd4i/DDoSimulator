@@ -64,7 +64,7 @@ void user_fails_attack
 
     node->set_attack_result(false);
 
-    node->get_circle().setOutlineThickness(0);
+    node->get_circle().setOutlineColor(sf::Color::Red);
     node->get_circle().setFillColor(sf::Color::Red);
     node->set_was_just_attacked(true);
     node->set_status_available(false);
@@ -100,8 +100,8 @@ void user_succeeds_attack
     node->set_attack_result(true);
     node->set_status_infected(!company->is_active());
 
-    node->get_circle().setOutlineThickness(-3);
-    node->get_circle().setOutlineColor(sf::Color{ 0, 190, 0 });
+    node->get_circle().setOutlineColor(sf::Color{ 0, 162, 232 });
+    node->get_circle().setFillColor(sf::Color{ 0, 162, 232 });
     node->set_was_just_attacked(true);
     node->set_status_available(false);
     node->reset_clock();
