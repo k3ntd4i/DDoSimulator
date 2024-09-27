@@ -33,6 +33,7 @@ int main()
 
     std::string *array_words{ new std::string[2000]{} };
 
+    TablaHash<Company*> companies{ 101 };
     GrafoSimple<Node*> company_network{ 22 };
 
     try
@@ -40,7 +41,7 @@ int main()
         initialize_map(texture_background, sprite_background);
         initialize_words(array_words);
         initialize_font(font);
-        initialize_company_network(company_network);
+        initialize_companies_with_network(companies, company_network);
     }
     catch (const std::runtime_error &error)
     {
@@ -70,10 +71,6 @@ int main()
     sf::Time countdown_time{ sf::seconds(120.0f) };
     sf::Clock countdown_clock{};
 
-    TablaHash<Company*> companies{ 53 };
-
-    initialize_companies(companies);
-
     User user{};
     Gameplay gameplay_status{};
 
@@ -84,6 +81,7 @@ int main()
     sf::Clock console_time{};
 
     bool click_flag{ false };
+    int company_index{};
     while (window.isOpen())
     {
         sf::Event event{};
@@ -118,7 +116,7 @@ int main()
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag)
         {
-            verify_node_click(window, company_network, click_flag, console_time);
+            verify_node_click(window, company_network, click_flag, console_time, company_index);
 
             if (click_flag)
             {
@@ -141,21 +139,15 @@ int main()
             if (is_input_command_correct(user_input, extracted_words))
             {
                 std::cout << "\nCorrecto!\n";
-                // logica de correcto
+                user_succeeds_attack(user, company_network, companies, gameplay_status, company_index);
             }
             else
             {
                 std::cout << "\nInorrecto!\n";
-
-                user.decrease_anonymity();
-                if (user.was_captured())
-                {
-                    std::cout << "\nHA SIDO CAPTURADO BRO, RIP!!!11\n";
-                    return 0;
-                }
+                user_fails_attack(user, company_network, company_index);
             }
 
-            clear_conditional_objects(extracted_words, click_flag, user_input);
+            clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
         window.clear(sf::Color::Black);
@@ -166,15 +158,32 @@ int main()
         // For para dibujar los nodos de la compañia
         for (int i{0}; i < company_network.size(); ++i)
         {
-            // Node *temporal_node{ company_network.get_element(i) };
-            // if (temporal_node->was_successfully_attacked() &&  temporal_node->get_elapsed_seconds() < 2)
+            Node *temporal_node{ company_network.get_element(i) };
+
+            if (temporal_node->was_just_attacked() && temporal_node->get_elapsed_seconds() >= 3.f)
+            {
+                if (temporal_node->is_infected())
+                {
+                    temporal_node->get_circle().setFillColor(sf::Color::Green);
+                    temporal_node->set_status_available(false);
+                    temporal_node->set_was_just_attacked(false);
+                }
+                else
+                {
+                    temporal_node->get_circle().setFillColor(sf::Color::White);
+                    temporal_node->get_circle().setOutlineColor(sf::Color::White);
+                    temporal_node->get_circle().setOutlineThickness(0);
+                    temporal_node->set_status_available(true);
+                    temporal_node->set_was_just_attacked(false);
+                }
+            }
             window.draw(company_network.get_element(i)->get_circle());
         }
 
-        draw_bar(window, progress_bar_text);
+        draw_bar(window, progress_bar_text, gameplay_status);
         draw_countdown(window, countdown_clock, countdown_time, countdown_text);
 
-        if (click_flag && console_time.getElapsedTime().asSeconds() < 10.f)
+        if (click_flag && console_time.getElapsedTime().asSeconds() < 14.f)
         {
             popup_console_window(user_input, command_required, command_required_text, input_command_text);
             window.draw(translucent_background);
@@ -185,7 +194,8 @@ int main()
         }
         else if (click_flag)
         {
-            clear_conditional_objects(extracted_words, click_flag, user_input);
+            user_fails_attack(user, company_network, company_index);
+            clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
         window.display();

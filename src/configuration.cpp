@@ -25,7 +25,7 @@ void initialize_map(sf::Texture &texture_background, sf::Sprite &sprite_backgrou
 
 void initialize_font(sf::Font &font)
 {
-    if (!font.loadFromFile("./assets/fonts/digital.TTF"))
+    if (!font.loadFromFile(R"(assets\fonts\digital.TTF)"))
     {
         throw std::runtime_error{ "The font could not be loaded." };
     }
@@ -96,27 +96,35 @@ void initialize_words(std::string *array_words)
     }
 }
 
-void initialize_company_network(GrafoSimple<Node*> &company_network)
+void initialize_companies_with_network(TablaHash<Company*> &companies, GrafoSimple<Node*> &company_network)
 {
-    for (int i{0}; i < 22; ++i)
+    std::ifstream file{ R"(data\company_names.txt)" };
+
+    if (!file)
     {
-        company_network.set_node(i, new Node{});
+        throw std::runtime_error{ "Company names could not be initialized." };
     }
 
-    std::ifstream file{ R"(data\coordinates.txt)" };
+    std::string name{};
+    for (int i{0}; std::getline(file, name); ++i)
+    {
+        companies.insert(name, new Company{});
+        company_network.set_node(i, new Node{ name });
+    }
+
+    file.close();
+
+    file.open(R"(data\coordinates.txt)");
 
     if (!file)
     {
         throw std::runtime_error{ "Coordinates could not be initialized." };
     }
 
-    std::string line{};
     float x{};
     float y{};
-    for (int i{0}; std::getline(file, line); ++i)
+    for (int i{0}; file >> x >> y; ++i)
     {
-        std::stringstream stream{ line };
-        stream >> x >> y;
         company_network.get_element(i)->get_circle().setPosition(x, y);
     }
 
@@ -160,11 +168,6 @@ void initialize_company_network(GrafoSimple<Node*> &company_network)
 
         initial_node->set_status_available(true);
     }
-}
-
-void initialize_companies(TablaHash<Company*> &companies)
-{
-    
 }
 
 void initialize_coins
