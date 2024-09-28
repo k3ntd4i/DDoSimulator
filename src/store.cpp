@@ -98,6 +98,7 @@ void Store::handle_click(float x, float y, const sf::Font& font) {
 
 
 void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font) {
+    // Dibujar el fondo transparente de la tienda
     sf::RectangleShape background_block{ sf::Vector2f{ 1280.f, 720.f } };
     background_block.setFillColor(sf::Color(0, 0, 0, 150));
     window.draw(background_block);
@@ -108,45 +109,43 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font) {
         std::cerr << "Failed to load shop background image." << std::endl;
         return;
     }
+
     sf::Sprite shop_background_sprite(shop_background_texture);
-    shop_background_sprite.setPosition(240.f, 60.f);
-    shop_background_sprite.setScale(
-        800.f / shop_background_texture.getSize().x,
-        600.f / shop_background_texture.getSize().y
-    );
+    // Escalar la imagen para que mantenga sus proporciones originales (960x540)
+    float background_width = 960.f;
+    float background_height = 540.f;
+    float scale_x = background_width / shop_background_texture.getSize().x;
+    float scale_y = background_height / shop_background_texture.getSize().y;
+    shop_background_sprite.setScale(scale_x, scale_y);
+    shop_background_sprite.setPosition(160.f, 90.f); // Centrar la imagen en la ventana (1280x720)
+
     window.draw(shop_background_sprite);
 
     // Dibujar el borde de la ventana de la tienda
-    sf::RectangleShape store_window_border{ sf::Vector2f{ 800.f, 600.f } };
+    sf::RectangleShape store_window_border{ sf::Vector2f{ background_width, background_height } };
     store_window_border.setFillColor(sf::Color::Transparent);
     store_window_border.setOutlineColor(sf::Color::Green);
     store_window_border.setOutlineThickness(5.f);
-    store_window_border.setPosition(240.f, 60.f);
+    store_window_border.setPosition(160.f, 90.f); // Alinear con la imagen de fondo
     window.draw(store_window_border);
 
-    sf::Text store_title{ "", font, 45 };
-    store_title.setFillColor(sf::Color::White);  // Cambiado a blanco para que se vea sobre el fondo
-    store_title.setPosition(320.f, 80.f);
-    window.draw(store_title);
-
     sf::Text coins_text{ "Yuca Coins: " + std::to_string(yuca_coins), font, 30 };
-    coins_text.setFillColor(sf::Color::White);  // Cambiado a blanco para que se vea sobre el fondo
-    coins_text.setPosition(800.f, 120.f);
+    coins_text.setFillColor(sf::Color::White);  
+    coins_text.setPosition(800.f, 130.f);
     window.draw(coins_text);
 
-    // Definir el tamaño de los nodos (puedes ajustar este valor según tus necesidades)
-    float node_radius = 30.f;  // Radio más pequeño para los nodos
+    float node_radius = 30.f;
 
+    // Dibujar nodos de los productos
     for (const auto& product : pre_order_products) {
         sf::CircleShape node(node_radius);
         node.setPosition(product.get_position());
         node.setFillColor(yuca_coins >= product.get_price().value_or(0) ? sf::Color::Green : sf::Color::Red);
         window.draw(node);
 
-        sf::Text node_text{ product.get_name().value_or("Unnamed"), font, 16 };  // Tamaño de fuente más pequeño
+        sf::Text node_text{ product.get_name().value_or("Unnamed"), font, 16 };
         node_text.setFillColor(sf::Color::Black);
-        
-        // Centrar el texto en el nodo
+
         sf::FloatRect textRect = node_text.getLocalBounds();
         node_text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top + textRect.height/2.0f);
         node_text.setPosition(product.get_position().x + node_radius, product.get_position().y + node_radius);
@@ -154,6 +153,8 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font) {
         window.draw(node_text);
     }
 }
+
+
 
 void Store::update(sf::RenderWindow& window) {
     // Any update logic if needed
