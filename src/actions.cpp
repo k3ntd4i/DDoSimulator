@@ -93,6 +93,7 @@ void user_succeeds_attack
         {
             user.update_yuca_coins_wallet(6);
             coin_text.setString( std::to_string(user.get_yuca_coins()) );
+            coin_text.setPosition(1155.f - (coin_text.getGlobalBounds().width / 2.f), 628.f);
             node->set_status_infected(!company->is_active());
         }
 
