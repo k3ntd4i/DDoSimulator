@@ -1,8 +1,8 @@
 #include "../include/gui.hpp"
 
-void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_text) 
+void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_text, Gameplay &gameplay_status)
 {
-    int infected{ 10 };
+    int infected{ gameplay_status.get_company_counter() };
 
     progress_bar_text.setString( std::to_string(infected) + " / 22" );
     progress_bar_text.setPosition(640 - (progress_bar_text.getGlobalBounds().width / 2), 598.f);
@@ -31,45 +31,53 @@ void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_text)
     }
 }
 
-
-
-void popup_window(sf::RenderWindow &window, sf::Text &words_text, sf::Text &input_text, std::string &user_input)
+void popup_console_window
+(
+    const std::string &user_input,
+    const std::string &command_required,
+    sf::Text &command_required_text,
+    sf::Text &input_command_text
+)
 {
-    //Background_color es la capa de color translucida sobre la ventana
-    sf::RectangleShape background_block{ sf::Vector2f{ 1280.f, 720.f } };
-    background_block.setPosition(0,0);
-    background_block.setFillColor(sf::Color(20,70,20,60));
+    Lista<std::string> words{};
+    std::string build_word{};
+    int index_insert{0};
 
-    //Ventana emergente
-    sf::RectangleShape console{ sf::Vector2f{640.f, 360.f} };
-    console.setPosition(320.f, 180.f);
-    console.setFillColor(sf::Color(0,0,0));
+    for (int i = 0; i <= command_required.length(); ++i)
+    {
+        if (i == command_required.length() || command_required[i] == ' ')
+        {
+            words.insert(index_insert, build_word);
+            build_word.clear();
+            ++index_insert;
+        }
+        else
+        {
+            build_word += command_required[i];
+        }
+    }
 
-    //Campo de texto 
-    sf::RectangleShape text_field{ sf::Vector2f{580.f, 50.f} };
-    text_field.setPosition(350.f, 340.f);
-    text_field.setFillColor(sf::Color::White);
-    text_field.setOutlineColor(sf::Color::Green);
-    text_field.setOutlineThickness(-2.f);
+    float text_heigth{ 265.f };
+    int temporal_space_index{ 0 };
+    std::string command_required_copy{};
 
+    for (int i{0}; i < words.size(); ++i)
+    {
+        command_required_copy += words.get(i);
+        command_required_text.setString(command_required_copy);
 
-    
-    //Texto del codigo/palabras random
-    words_text.setString( "pastel comida ## $5 5 amor"  );
-    words_text.setPosition(640 - (words_text.getGlobalBounds().width / 2), 270.f);
+        if (command_required_text.getGlobalBounds().width >= 580.f)
+        {
+            command_required_copy[command_required_copy.find_last_of(' ')] = '\n';
+            text_heigth -= 40;
+        }
 
-    std::string words{ user_input };
-    input_text.setString( words );
-    input_text.setPosition(640 - (input_text.getGlobalBounds().width / 2), 335.f);
+        command_required_copy += ' ';
+    }
 
+    command_required_text.setString(command_required_copy);
+    command_required_text.setPosition(640 - (command_required_text.getGlobalBounds().width / 2), text_heigth);
 
-
-    
-
-    window.draw(background_block);
-    window.draw(console);
-    window.draw(text_field);
-    window.draw(words_text);
-    window.draw(input_text);
-
+    input_command_text.setString(user_input);
+    input_command_text.setPosition(640 - (input_command_text.getGlobalBounds().width / 2), 335.f);
 }

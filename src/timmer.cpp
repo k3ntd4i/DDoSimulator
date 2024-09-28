@@ -8,8 +8,7 @@ void draw_countdown
     sf::Text &countdown_text
 )
 {
-    sf::Time elapsed_time{ clock.getElapsedTime() };
-    sf::Time time_remaining{ countdown_time - elapsed_time };
+    sf::Time time_remaining{ countdown_time - clock.getElapsedTime() };
 
     if (time_remaining.asSeconds() <= 0)
     {

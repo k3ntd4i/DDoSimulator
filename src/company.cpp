@@ -1,6 +1,6 @@
 #include "../include/company.hpp"
 
-void Company::update_integrity(int damage, CompanyCounter &company_counter)
+void Company::update_integrity(int damage, Gameplay &gameplay_status)
 {
     if (!this->active)
     {
@@ -9,9 +9,9 @@ void Company::update_integrity(int damage, CompanyCounter &company_counter)
 
     this->integriy -= damage;
 
-    if (this->integriy <= 0 && this->active)
+    if (this->integriy <= 0)
     {
-        company_counter.increase_counter();
+        gameplay_status.increase_company_counter();
         this->active = false;
     }
 }
