@@ -25,11 +25,9 @@ int main()
     sf::Texture texture_background{};
     sf::Sprite sprite_background{};
 
-    // Textura y contenedor para las yuca coins
     sf::Texture coin_texture{};
     sf::CircleShape circle_coin_container{};
 
-    // Textura y contener para anonimato
     sf::Texture anonymity_texture{};
     sf::Sprite anonymity_sprite{};
     sf::Font font{};
@@ -61,7 +59,7 @@ int main()
     sf::Text progress_bar_text{};
     sf::Text countdown_text{};
     sf::Text command_required_text{}; // palabras aleatorias
-    sf::Text input_command_text{}; // input del usuario
+    sf::Text input_command_text{}; // input del usuario en la consola
 
     initialize_progress_bar_text(font, progress_bar_text);
     initialize_time_text(font, countdown_text);
@@ -101,14 +99,14 @@ int main()
             case sf::Event::TextEntered:
                 if (click_flag)
                 {
-                    // backspace (Tecla de borrar texto)
+                    // Backspace (Tecla de borrar texto)
                     if (event.text.unicode == 8 && !user_input.empty())
                     {
                         user_input.pop_back(); // Eliminar el último carácter
                     }
                     else if (32 <= event.text.unicode && event.text.unicode <= 126)
                     {
-                        // Esto es pa que sea ascii
+                        // Pasar de unicode a ASCII
                         user_input += static_cast<char>(event.text.unicode);
                     }
                 }
@@ -127,7 +125,7 @@ int main()
             {
                 command_required = get_command
                 (
-                    gameplay_status.get_amount_words(),
+                    gameplay_status.get_quantity_words(),
                     extracted_words,
                     array_words,
                     gameplay_status.get_hard(),
@@ -161,7 +159,7 @@ int main()
         window.draw(circle_coin_container);
         window.draw(coin_text);
 
-        // For para dibujar los nodos de la compañia
+        // For para dibujar los nodos
         for (int i{0}; i < company_network.size(); ++i)
         {
             Node *temporal_node{ company_network.get_element(i) };

@@ -183,7 +183,7 @@ void initialize_coins
     coin_text.setFillColor(sf::Color::White);
 
     coin_text.setString( std::to_string(yuca_quantity) );
-    coin_text.setPosition( 1168.f - (coin_text.getGlobalBounds().width / 2.f), 628.f );
+    coin_text.setPosition(1125.f, 628.f);
 }
 
 /**

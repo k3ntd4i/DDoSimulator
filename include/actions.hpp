@@ -6,6 +6,7 @@
 #include "../include/estructuras/tabla_hash.hpp"
 #include "../include/estructuras/grafo_simple.hpp"
 #include "../include/estructuras/cola.hpp"
+#include "../include/estructuras/lista.hpp"
 #include "../include/company.hpp"
 #include "../include/node.hpp"
 #include "../include/user.hpp"
