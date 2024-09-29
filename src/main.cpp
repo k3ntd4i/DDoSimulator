@@ -35,6 +35,17 @@ int main()
 
     sf::Text coin_text{};
 
+    sf::Texture fail_background_texture{};
+    sf::Sprite fail_background_sprite{};
+    sf::Text fail_text{};
+
+    sf::Texture win_background_texture{};
+    sf::Sprite win_background_sprite{};
+    sf::Text win_text{};
+
+
+
+
     User user{};
 
     std::string *array_words{ new std::string[2000]{} };
@@ -88,6 +99,10 @@ int main()
     initialize_time_text(font, countdown_text);
     initialize_console_text(font, command_required_text);
     initialize_console_input_text(font, input_command_text);
+    initialize_fail_background(fail_background_texture, fail_background_sprite,
+                                font, fail_text);
+    initialize_win_background(win_background_texture, win_background_sprite,
+                                font, win_text);                            
 
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
     sf::RectangleShape console{ sf::Vector2f{ 640.f, 360.f } };
@@ -95,7 +110,7 @@ int main()
 
     initialize_console_window(translucent_background, console, text_field);
 
-    sf::Time countdown_time{ sf::seconds(120.0f) };
+    sf::Time countdown_time{ sf::seconds(300.0f) };
     sf::Clock countdown_clock{};
 
     Gameplay gameplay_status{};
@@ -235,8 +250,23 @@ int main()
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
+        //user_succedes_attack
         // Draw store
         store.draw(window, font, user);
+
+
+        if ( user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= 300.f)
+        {
+            window.draw(fail_background_sprite);
+            window.draw(fail_text);                
+            sf::Mouse::setPosition(sf::Vector2i{1280, 0}, window);
+        }
+            else if ( gameplay_status.get_company_counter()  == 22 )
+        {
+            window.draw(win_background_sprite);
+            window.draw(win_text);
+            sf::Mouse::setPosition(sf::Vector2i{1280, 0}, window);   
+        }
 
         window.display();
     }

@@ -37,3 +37,17 @@ void initialize_coins
     sf::CircleShape &circle_coin_container, 
     sf::Texture &coin_texture
 );
+
+void initialize_fail_background
+(   sf::Texture &fail_background_texture, 
+    sf::Sprite &fail_background_sprite,
+    sf::Font &font, 
+    sf::Text &fail_text
+);
+
+void initialize_win_background
+(   sf::Texture &win_background_texture, 
+    sf::Sprite &win_background_sprite,
+    sf::Font &font, 
+    sf::Text &win_text
+);
