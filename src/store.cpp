@@ -1,14 +1,13 @@
 #include "../include/store.hpp"
-#include <stdexcept>
 
 Product::Product(const std::string& product_name, const std::string& product_description, int product_price)
     : name{product_name}, description{product_description}, price{product_price} {}
 
 void Product::purchase() { is_purchased = true; }
 void Product::unlock() { is_unlocked = true; }
-std::optional<std::string> Product::get_name() const { return name; }
-std::optional<std::string> Product::get_description() const { return description; }
-std::optional<int> Product::get_price() const { return price; }
+std::string Product::get_name() const { return name; }
+std::string Product::get_description() const { return description; }
+int Product::get_price() const { return price; }
 bool Product::is_product_purchased() const { return is_purchased; }
 bool Product::is_product_unlocked() const { return is_unlocked; }
 void Product::set_position(float x, float y) { position = sf::Vector2f(x, y); }
@@ -24,7 +23,7 @@ Store::Store() {
 }
 
 void Store::initialize_power_tree() {
-    power_tree.insert(Product("Exploit Enhancer", "Increases attack power by 1", 10));
+    power_tree.insert(Product("Exploit Enhancer", "Increases attack power by 1 and removes 1 word from terminal", 10));
     power_tree.insert(Product("Firewall Bypass", "Removes 1 word from terminal", 7));
     power_tree.insert(Product("Code Injection", "Removes 1 word from terminal", 5));
     power_tree.insert(Product("Packet Sniffer", "Removes 1 word from terminal", 4));
@@ -69,33 +68,59 @@ void Store::toggle_store() {
     _is_store_open = !_is_store_open;
 }
 
-bool Store::attempt_purchase(Product &product, sf::Text &coin_text, User &user) {
-    
-    if (user.get_yuca_coins() >= product.get_price().value_or(0) && !product.is_product_purchased()) 
+void Store::attempt_purchase(Product &product, sf::Text &coin_text, User &user, Gameplay &gameplay_status)
+{
+    if (user.get_yuca_coins() < product.get_price())
     {
-    
-        std::cout << "Purchased power: " << product.get_name().value_or("Unknown") << std::endl;
-        user.update_yuca_coins_wallet(-(product.get_price().value_or(0)));
+        std::cout << "Not enough Yuca Coins to purchase" << product.get_name() << '\n';
+    }
+    // else if (!product.is_product_unlocked())
+    // {
+    //     std::cout << "The product is not unlocked" << product.get_name() << '\n';
+    // }
+    else if (!product.is_product_purchased())
+    {
+        std::cout << "Purchased power: " << product.get_name() << '\n';
+        user.update_yuca_coins_wallet(-(product.get_price()));
         coin_text.setString( std::to_string(user.get_yuca_coins()) );
         product.purchase();
-        return true;
-    } else {
-        std::cout << "Not enough Yuca Coins to purchase " << product.get_name().value_or("Unknown") << std::endl;
-        return false;
-    }
 
+        std::string product_description{ product.get_description() };
+
+        if (product.get_price() == 10)
+        {
+            gameplay_status.decrease_quantity_words();
+            user.increase_hack_intensity(1);
+        }
+        else if (product_description.starts_with("Increases"))
+        {
+            user.increase_hack_intensity(std::stoi(product_description.substr(product_description.find_last_of(' ') + 1)));
+        }
+        else if (product.get_description().starts_with("Removes"))
+        {
+            gameplay_status.decrease_quantity_words();
+        }
+    }
 }
 
-void Store::handle_click(float x, float y, sf::Text &coin_text, User &user) {
+void Store::handle_click(float x, float y, sf::Text &coin_text, User &user, Gameplay &gameplay_status)
+{
     sf::FloatRect icon_bounds = store_icon_sprite.getGlobalBounds();
-    if (icon_bounds.contains(x, y)) {
+
+    if (icon_bounds.contains(x, y))
+    {
         toggle_store();
-    } else if (is_store_open()) {
-        for (auto &product : pre_order_products) {
+    }
+    else if (is_store_open())
+    {
+        for (auto &product : pre_order_products)
+        {
             sf::CircleShape node(40.f);
             node.setPosition(product.get_position());
-            if (node.getGlobalBounds().contains(x, y)) {
-                attempt_purchase(product, coin_text, user);
+
+            if (node.getGlobalBounds().contains(x, y))
+            {
+                attempt_purchase(product, coin_text, user, gameplay_status);
                 break;
             }
         }
@@ -114,7 +139,7 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
     // Cargar y dibujar la imagen de fondo de la tienda
     sf::Texture shop_background_texture;
     if (!shop_background_texture.loadFromFile("assets/images/shop_background.png")) {
-        std::cerr << "Failed to load shop background image." << std::endl;
+        std::cerr << "Failed to load shop background image." << '\n';
         return;
     }
 
@@ -141,7 +166,7 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
     //codigo aqu ixdd
     sf::Texture nodes_texture;
     if (!nodes_texture.loadFromFile("assets/images/nodes_texture.png")) {
-        std::cerr << "The  texture could not be loaded." << std::endl;
+        std::cerr << "The texture could not be loaded." << '\n';
         return;
     }
 
@@ -153,7 +178,7 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
         node.setScale(0.25f, 0.25f);
         
         node.setPosition(product.get_position());
-        if (user.get_yuca_coins() >= product.get_price().value_or(0) && !product.is_product_purchased())
+        if (user.get_yuca_coins() >= product.get_price() && !product.is_product_purchased())
         {
             node.setTextureRect(sf::IntRect(0, 0, 240, 240));
         }

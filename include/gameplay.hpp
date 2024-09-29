@@ -6,6 +6,7 @@ class Gameplay
     int quantity_words{ 9 };
     bool hard{ false };
     bool extreme{ false };
+    float console_time_limit{ 13.f };
 
 public:
     Gameplay() = default;
@@ -14,5 +15,15 @@ public:
     int get_quantity_words() { return quantity_words; }
     int get_hard() { return hard; }
     int get_extreme() { return extreme; }
-    void increase_company_counter() { ++company_counter; }
+    float get_console_time_limit() { return console_time_limit; }
+    void decrease_quantity_words() { --quantity_words; }
+    void set_console_time_limit(float new_time) { this->console_time_limit = new_time; }
+
+    void increase_company_counter()
+    {
+        ++this->company_counter;
+
+        if (this->company_counter == 6) { this->hard = true; }
+        if (this->company_counter == 16) { this->extreme = true; }
+    }
 };

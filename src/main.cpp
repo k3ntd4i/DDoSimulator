@@ -150,15 +150,6 @@ int main()
                 }
                 break;
 
-            case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left) 
-                {
-                    store.handle_click(static_cast<float>(event.mouseButton.x), 
-                                        static_cast<float>(event.mouseButton.y),
-                                        coin_text, user);
-                }
-                break;
-
             default:
                 break;
             }
@@ -200,6 +191,18 @@ int main()
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag)
+        {
+            store.handle_click
+            (
+                static_cast<float>(event.mouseButton.x),
+                static_cast<float>(event.mouseButton.y),
+                coin_text,
+                user,
+                gameplay_status
+            );
+        }
+
         window.clear(sf::Color::Black);
         window.draw(sprite_background);
         window.draw(anonymity_sprite);
@@ -234,6 +237,8 @@ int main()
 
         draw_bar(window, progress_bar_text, gameplay_status);
         draw_countdown(window, countdown_clock, countdown_time, countdown_text);
+
+        store.draw(window, font, user);
 
         if (click_flag && console_time.getElapsedTime().asSeconds() < 14.f && !store.is_store_open())
         {
