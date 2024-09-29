@@ -43,8 +43,7 @@ int main()
     sf::Sprite win_background_sprite{};
     sf::Text win_text{};
 
-
-
+    sf::Text exit_text{};
 
     User user{};
 
@@ -53,7 +52,6 @@ int main()
     TablaHash<Company*> companies{ 101 };
     GrafoSimple<Node*> company_network{ 22 };
 
-    // Initialize store
     Store store{};
 
     try
@@ -64,25 +62,9 @@ int main()
         initialize_font(font);
         initialize_coins(user.get_yuca_coins(), font, coin_text, circle_coin_container, coin_texture);
         initialize_companies_and_network(companies, company_network);
-        
-        // Initialize store icon
-        if (!store.initialize_store_icon()) {
-            throw std::runtime_error("Failed to initialize store icon");
-        }
-        store.set_store_icon_position(26.f, 619.f);
-
-        // Set positions for powers
-        store.set_product_position("Exploit Enhancer", 610.f, 531.f);
-        store.set_product_position("Firewall Bypass", 730.f, 468.f);
-        store.set_product_position("Code Injection", 819.f, 408.f);
-        store.set_product_position("Packet Sniffer", 819.f, 286.f);
-        store.set_product_position("Rootkit Reducer", 661.f, 232.f);
-        store.set_product_position("Malware Minimizer", 661.f, 334.f);
-        store.set_product_position("DDoS Amplifier", 494.f, 468.f);
-        store.set_product_position("Zero-Day Surge", 558.f, 334.f);
-        store.set_product_position("Brute Force Multiplier", 557.f, 232.f);
-        store.set_product_position("Ultimate Exploit", 407.f, 408.f);
-
+        store.initialize_store_icon();
+        initialize_fail_background(fail_background_texture, fail_background_sprite, font, fail_text);
+        initialize_win_background(win_background_texture, win_background_sprite, font, win_text);
     }
     catch (const std::runtime_error &error)
     {
@@ -99,10 +81,6 @@ int main()
     initialize_time_text(font, countdown_text);
     initialize_console_text(font, command_required_text);
     initialize_console_input_text(font, input_command_text);
-    initialize_fail_background(fail_background_texture, fail_background_sprite,
-                                font, fail_text);
-    initialize_win_background(win_background_texture, win_background_sprite,
-                                font, win_text);                            
 
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
     sf::RectangleShape console{ sf::Vector2f{ 640.f, 360.f } };
@@ -123,6 +101,7 @@ int main()
     sf::Clock console_time{};
     sf::Clock console_time_indicator{}; //para la barra de tiempo xd
 
+    bool end_game{ false };
     bool click_flag{ false };
     int company_index{};
     while (window.isOpen())
@@ -155,6 +134,11 @@ int main()
             default:
                 break;
             }
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && end_game)
+        {
+            window.close();
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag && !store.is_store_open())
@@ -208,8 +192,6 @@ int main()
         window.clear(sf::Color::Black);
         window.draw(sprite_background);
         window.draw(anonymity_sprite);
-        window.draw(circle_coin_container);
-        window.draw(coin_text);
 
         // For para dibujar los nodos
         for (int i{0}; i < company_network.size(); ++i)
@@ -239,8 +221,9 @@ int main()
 
         draw_bar(window, progress_bar_text, gameplay_status);
         draw_countdown(window, countdown_clock, countdown_time, countdown_text);
-
         store.draw(window, font, user);
+        window.draw(circle_coin_container);
+        window.draw(coin_text);
 
         if (click_flag && console_time.getElapsedTime().asSeconds() < 14.f && !store.is_store_open())
         {
@@ -259,30 +242,23 @@ int main()
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
-        
-        
-
-        //user_succedes_attack
-        // Draw store
-        store.draw(window, font, user);
-
-
-        if ( user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= 200.f)
+        if (user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= 200.f)
         {
+            end_game = true;
             window.draw(fail_background_sprite);
-            window.draw(fail_text);                
-            sf::Mouse::setPosition(sf::Vector2i{1280, 0}, window);
+            window.draw(fail_text);
+            sf::Mouse::setPosition(sf::Vector2i{0, 0}, window);
         }
-            else if ( gameplay_status.get_company_counter()  == 22 )
+        else if (gameplay_status.get_company_counter() == 22)
         {
+            end_game = true;
             window.draw(win_background_sprite);
             window.draw(win_text);
-            sf::Mouse::setPosition(sf::Vector2i{1280, 0}, window);   
+            sf::Mouse::setPosition(sf::Vector2i{0, 0}, window);
         }
 
         window.display();
     }
 
-    //delete[] array_words;
     return 0;
 }

@@ -202,10 +202,14 @@ void initialize_anonymity(int anonymity, sf::Sprite &anonymity_sprite, sf::Textu
     anonymity_sprite.setPosition(1166.f, 25.f);
 }
 
+/**
+ * @throw std::runtime_error si el asset necesario no fue encontrado
+ */
 void initialize_fail_background
-(   sf::Texture &fail_background_texture, 
+(
+    sf::Texture &fail_background_texture,
     sf::Sprite &fail_background_sprite,
-    sf::Font &font, 
+    sf::Font &font,
     sf::Text &fail_text
 )
 {
@@ -214,27 +218,25 @@ void initialize_fail_background
         throw std::runtime_error{ "The fail background could not be loaded." };
     }
 
-
-
     fail_background_sprite.setTexture( fail_background_texture );
     fail_background_sprite.setScale(1.f, 1.f);
     fail_background_sprite.setPosition(0.f, 0.f);
-
 
     fail_text.setFont(font);
     fail_text.setFillColor(sf::Color::Red);
     fail_text.setCharacterSize(160);
     fail_text.setString("Fuiste capturado");
-    fail_text.setPosition(640 - (fail_text.getGlobalBounds().width / 2), 
-                                360 - (fail_text.getGlobalBounds().height));
-                    
-
+    fail_text.setPosition(640 - (fail_text.getGlobalBounds().width / 2), 360 - (fail_text.getGlobalBounds().height));
 }
 
+/**
+ * @throw std::runtime_error si el asset necesario no fue encontrado
+ */
 void initialize_win_background
-(   sf::Texture &win_background_texture, 
+(
+    sf::Texture &win_background_texture,
     sf::Sprite &win_background_sprite,
-    sf::Font &font, 
+    sf::Font &font,
     sf::Text &win_text
 )
 {
@@ -251,7 +253,5 @@ void initialize_win_background
     win_text.setFillColor(sf::Color::White);
     win_text.setCharacterSize(160);
     win_text.setString("Ciberespacio\nconquistado");
-    win_text.setPosition(640 - (win_text.getGlobalBounds().width / 2), 
-                                435 - (win_text.getGlobalBounds().height));
-                    
+    win_text.setPosition(640 - (win_text.getGlobalBounds().width / 2), 435 - (win_text.getGlobalBounds().height));
 }

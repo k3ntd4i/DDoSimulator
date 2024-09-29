@@ -76,16 +76,14 @@ void popup_console_window
 
         command_required_copy += ' ';
     }
-    
 
-    
     float elapsed_time{console_time.getElapsedTime().asSeconds()};
-    if (elapsed_time < 3.5f) 
+    if (elapsed_time < 3.5f)
     {
         time_bar.setFillColor(sf::Color::Green);
         time_bar.setSize(sf::Vector2f{638.f, 7.f});
     }
-    else if (elapsed_time >= 3.5f && elapsed_time < 7.f) 
+    else if (elapsed_time >= 3.5f && elapsed_time < 7.f)
     {
         time_bar.setFillColor(sf::Color::Yellow);
         time_bar.setSize(sf::Vector2f{478.f, 7.f});
