@@ -6,6 +6,7 @@
 #include "../include/estructuras/tabla_hash.hpp"
 #include "../include/estructuras/grafo_simple.hpp"
 #include "../include/estructuras/cola.hpp"
+#include "../include/estructuras/lista.hpp"
 #include "../include/company.hpp"
 #include "../include/node.hpp"
 #include "../include/user.hpp"
@@ -32,6 +33,7 @@ void clear_conditional_objects
 void user_fails_attack
 (
     User &user,
+    sf::Sprite &anonymity_sprite,
     GrafoSimple<Node*> &company_network,
     int company_index
 );
@@ -39,6 +41,7 @@ void user_fails_attack
 void user_succeeds_attack
 (
     User &user,
+    sf::Text &coin_text,
     GrafoSimple<Node*> &company_network,
     TablaHash<Company*> &companies,
     Gameplay &gameplay_status,

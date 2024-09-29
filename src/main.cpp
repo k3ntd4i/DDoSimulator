@@ -25,14 +25,14 @@ int main()
     sf::Texture texture_background{};
     sf::Sprite sprite_background{};
 
-    // Textura y contenedor para las yuca coins
     sf::Texture coin_texture{};
     sf::CircleShape circle_coin_container{};
 
-    // Textura y contener para anonimato
     sf::Texture anonymity_texture{};
     sf::Sprite anonymity_sprite{};
     sf::Font font{};
+
+    sf::Text coin_text{};
 
     User user{};
 
@@ -47,9 +47,9 @@ int main()
         initialize_map(texture_background, sprite_background);
         initialize_words(array_words);
         initialize_font(font);
-        initialize_companies_with_network(companies, company_network);
+        initialize_coins(user.get_yuca_coins() ,font, coin_text, circle_coin_container, coin_texture);
+        initialize_companies_and_network(companies, company_network);
     }
-
     catch (const std::runtime_error &error)
     {
         std::cerr << "Error in initialization. " << error.what();
@@ -59,19 +59,16 @@ int main()
     sf::Text progress_bar_text{};
     sf::Text countdown_text{};
     sf::Text command_required_text{}; // palabras aleatorias
-    sf::Text input_command_text{}; // input del usuario
-    sf::Text coin_text{};
-    int yuca_quantity{0}; //variable temporal para cuando ya tengamos la variable yuca_coins
+    sf::Text input_command_text{}; // input del usuario en la consola
 
     initialize_progress_bar_text(font, progress_bar_text);
     initialize_time_text(font, countdown_text);
     initialize_console_text(font, command_required_text);
     initialize_console_input_text(font, input_command_text);
-    initialize_coins(yuca_quantity ,font, coin_text, circle_coin_container, coin_texture);
 
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
-    sf::RectangleShape console{ sf::Vector2f{640.f, 360.f} };
-    sf::RectangleShape text_field{ sf::Vector2f{580.f, 50.f} };
+    sf::RectangleShape console{ sf::Vector2f{ 640.f, 360.f } };
+    sf::RectangleShape text_field{ sf::Vector2f{ 580.f, 50.f } };
 
     initialize_console_window(translucent_background, console, text_field);
 
@@ -102,14 +99,14 @@ int main()
             case sf::Event::TextEntered:
                 if (click_flag)
                 {
-                    // backspace (Tecla de borrar texto)
+                    // Backspace (Tecla de borrar texto)
                     if (event.text.unicode == 8 && !user_input.empty())
                     {
                         user_input.pop_back(); // Eliminar el último carácter
                     }
                     else if (32 <= event.text.unicode && event.text.unicode <= 126)
                     {
-                        // Esto es pa que sea ascii
+                        // Pasar de unicode a ASCII
                         user_input += static_cast<char>(event.text.unicode);
                     }
                 }
@@ -128,7 +125,7 @@ int main()
             {
                 command_required = get_command
                 (
-                    gameplay_status.get_amount_words(),
+                    gameplay_status.get_quantity_words(),
                     extracted_words,
                     array_words,
                     gameplay_status.get_hard(),
@@ -145,18 +142,16 @@ int main()
             if (is_input_command_correct(user_input, extracted_words))
             {
                 std::cout << "\nCorrecto!\n";
-                user_succeeds_attack(user, company_network, companies, gameplay_status, company_index);
+                user_succeeds_attack(user, coin_text, company_network, companies, gameplay_status, company_index);
             }
             else
             {
                 std::cout << "\nInorrecto!\n";
-                user_fails_attack(user, company_network, company_index);
+                user_fails_attack(user, anonymity_sprite, company_network, company_index);
             }
 
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
-
-        anonymity_sprite.setTextureRect(sf::IntRect(240 * user.get_anonymity(), 0, 240, 196));
 
         window.clear(sf::Color::Black);
         window.draw(sprite_background);
@@ -164,28 +159,29 @@ int main()
         window.draw(circle_coin_container);
         window.draw(coin_text);
 
-        // For para dibujar los nodos de la compañia
+        // For para dibujar los nodos
         for (int i{0}; i < company_network.size(); ++i)
         {
             Node *temporal_node{ company_network.get_element(i) };
 
-            if (temporal_node->was_just_attacked() && temporal_node->get_elapsed_seconds() >= 3.f)
+            if (temporal_node->was_just_attacked())
             {
                 if (temporal_node->is_infected())
                 {
+                    temporal_node->get_circle().setOutlineThickness(0.f);
                     temporal_node->get_circle().setFillColor(sf::Color::Green);
                     temporal_node->set_status_available(false);
                     temporal_node->set_was_just_attacked(false);
                 }
-                else
+                else if (temporal_node->get_elapsed_seconds() >= 5.f)
                 {
                     temporal_node->get_circle().setFillColor(sf::Color::White);
                     temporal_node->get_circle().setOutlineColor(sf::Color::White);
-                    temporal_node->get_circle().setOutlineThickness(0);
                     temporal_node->set_status_available(true);
                     temporal_node->set_was_just_attacked(false);
                 }
             }
+
             window.draw(company_network.get_element(i)->get_circle());
         }
 
@@ -203,7 +199,7 @@ int main()
         }
         else if (click_flag)
         {
-            user_fails_attack(user, company_network, company_index);
+            user_fails_attack(user, anonymity_sprite, company_network, company_index);
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
