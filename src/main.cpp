@@ -10,6 +10,7 @@
 #include "../include/estructuras/tabla_hash.hpp"
 #include "../include/estructuras/grafo_simple.hpp"
 #include "../include/estructuras/cola.hpp"
+#include "../include/store.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "SFML/System.hpp"
@@ -41,14 +42,36 @@ int main()
     TablaHash<Company*> companies{ 101 };
     GrafoSimple<Node*> company_network{ 22 };
 
+    // Initialize store
+    Store store{};
+
     try
     {
         initialize_anonymity(user.get_anonymity(), anonymity_sprite, anonymity_texture);
         initialize_map(texture_background, sprite_background);
         initialize_words(array_words);
         initialize_font(font);
-        initialize_coins(user.get_yuca_coins() ,font, coin_text, circle_coin_container, coin_texture);
+        initialize_coins(user.get_yuca_coins(), font, coin_text, circle_coin_container, coin_texture);
         initialize_companies_and_network(companies, company_network);
+        
+        // Initialize store icon
+        if (!store.initialize_store_icon()) {
+            throw std::runtime_error("Failed to initialize store icon");
+        }
+        store.set_store_icon_position(26.f, 619.f);
+
+        // Set positions for powers
+        store.set_product_position("Exploit Enhancer", 610.f, 531.f);
+        store.set_product_position("Firewall Bypass", 730.f, 468.f);
+        store.set_product_position("Code Injection", 819.f, 408.f);
+        store.set_product_position("Packet Sniffer", 819.f, 286.f);
+        store.set_product_position("Rootkit Reducer", 661.f, 232.f);
+        store.set_product_position("Malware Minimizer", 661.f, 334.f);
+        store.set_product_position("DDoS Amplifier", 494.f, 468.f);
+        store.set_product_position("Zero-Day Surge", 558.f, 334.f);
+        store.set_product_position("Brute Force Multiplier", 557.f, 232.f);
+        store.set_product_position("Ultimate Exploit", 407.f, 408.f);
+
     }
     catch (const std::runtime_error &error)
     {
@@ -112,12 +135,20 @@ int main()
                 }
                 break;
 
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    store.handle_click(static_cast<float>(event.mouseButton.x), 
+                                       static_cast<float>(event.mouseButton.y),
+                                       font);
+                }
+                break;
+
             default:
                 break;
             }
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag)
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag && !store.is_store_open())
         {
             verify_node_click(window, company_network, click_flag, console_time, company_index);
 
@@ -188,7 +219,7 @@ int main()
         draw_bar(window, progress_bar_text, gameplay_status);
         draw_countdown(window, countdown_clock, countdown_time, countdown_text);
 
-        if (click_flag && console_time.getElapsedTime().asSeconds() < 14.f)
+        if (click_flag && console_time.getElapsedTime().asSeconds() < 14.f && !store.is_store_open())
         {
             popup_console_window(user_input, command_required, command_required_text, input_command_text);
             window.draw(translucent_background);
@@ -197,14 +228,18 @@ int main()
             window.draw(command_required_text);
             window.draw(input_command_text);
         }
-        else if (click_flag)
+        else if (click_flag && !store.is_store_open())
         {
             user_fails_attack(user, anonymity_sprite, company_network, company_index);
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
+        // Draw store
+        store.draw(window, font);
+
         window.display();
     }
 
+    //delete[] array_words;
     return 0;
 }

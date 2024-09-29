@@ -23,6 +23,10 @@ public:
         liberar_memoria(this->arbol);
     }
 
+    ArbolBinario<T>* get_root() {
+        return this->arbol;
+    }
+    
     bool is_empty()
     {
         return (this->cantidad_nodos == 0);
@@ -310,4 +314,5 @@ private:
 
         delete sub_arbol;
     }
+
 };
