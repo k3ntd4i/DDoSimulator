@@ -13,6 +13,8 @@ void popup_console_window
     const std::string &user_input,
     const std::string &command_required,
     sf::Text &command_required_text,
-    sf::Text &input_command_text
+    sf::Text &input_command_text,
+    sf::Clock &console_time,
+    sf::RectangleShape &time_bar
 );
 

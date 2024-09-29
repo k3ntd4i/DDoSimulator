@@ -36,7 +36,9 @@ void popup_console_window
     const std::string &user_input,
     const std::string &command_required,
     sf::Text &command_required_text,
-    sf::Text &input_command_text
+    sf::Text &input_command_text,
+    sf::Clock &console_time,
+    sf::RectangleShape &time_bar
 )
 {
     Lista<std::string> words{};
@@ -57,7 +59,7 @@ void popup_console_window
         }
     }
 
-    float text_heigth{ 265.f };
+    float text_heigth{ 325.f };
     int temporal_space_index{ 0 };
     std::string command_required_copy{};
 
@@ -74,10 +76,46 @@ void popup_console_window
 
         command_required_copy += ' ';
     }
+    
+
+    
+    float elapsed_time{console_time.getElapsedTime().asSeconds()};
+    if (elapsed_time < 3.5f) 
+    {
+        time_bar.setFillColor(sf::Color::Green);
+        time_bar.setSize(sf::Vector2f{638.f, 7.f});
+    }
+    else if (elapsed_time >= 3.5f && elapsed_time < 7.f) 
+    {
+        time_bar.setFillColor(sf::Color::Yellow);
+        time_bar.setSize(sf::Vector2f{478.f, 7.f});
+    }
+    else if (elapsed_time >= 7.f && elapsed_time <= 10.5f)
+    {
+        time_bar.setFillColor(sf::Color(255,131,0));
+        time_bar.setSize(sf::Vector2f{319.f, 7.f});
+    }
+    else if (elapsed_time >= 10.5f && elapsed_time < 12.f)
+    {
+        time_bar.setFillColor(sf::Color::Red);
+        time_bar.setSize(sf::Vector2f{159.f, 7.f});
+    }
+    else if (elapsed_time >= 12.f && elapsed_time < 13.5f)
+    {
+        time_bar.setFillColor(sf::Color::Red);
+        time_bar.setSize(sf::Vector2f{40.f, 7.f});
+    }
+    else if (elapsed_time >= 13.5f)
+    {
+        time_bar.setFillColor(sf::Color::Red);
+        time_bar.setSize(sf::Vector2f{6.f, 7.f});
+    }
+
+    time_bar.setPosition(640 - (time_bar.getGlobalBounds().width / 2), 532.f);
 
     command_required_text.setString(command_required_copy);
     command_required_text.setPosition(640 - (command_required_text.getGlobalBounds().width / 2), text_heigth);
 
     input_command_text.setString(user_input);
-    input_command_text.setPosition(640 - (input_command_text.getGlobalBounds().width / 2), 335.f);
+    input_command_text.setPosition(640 - (input_command_text.getGlobalBounds().width / 2), 390.f);
 }

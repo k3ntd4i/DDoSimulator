@@ -80,7 +80,7 @@ void initialize_console_window
     console.setOutlineColor(sf::Color::White);
     console.setOutlineThickness(-1.f);
 
-    text_field.setPosition(350.f, 340.f);
+    text_field.setPosition(350.f, 393.f);
     text_field.setFillColor(sf::Color::White);
 }
 

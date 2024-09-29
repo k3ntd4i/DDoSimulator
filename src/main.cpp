@@ -107,6 +107,7 @@ int main()
     sf::RectangleShape translucent_background{ sf::Vector2f{ 1280.f, 720.f } };
     sf::RectangleShape console{ sf::Vector2f{ 640.f, 360.f } };
     sf::RectangleShape text_field{ sf::Vector2f{ 580.f, 50.f } };
+    sf::RectangleShape time_bar{ sf::Vector2f{ 638.f, 10.f } };
 
     initialize_console_window(translucent_background, console, text_field);
 
@@ -120,6 +121,7 @@ int main()
     std::string command_required{};
 
     sf::Clock console_time{};
+    sf::Clock console_time_indicator{}; //para la barra de tiempo xd
 
     bool click_flag{ false };
     int company_index{};
@@ -242,18 +244,23 @@ int main()
 
         if (click_flag && console_time.getElapsedTime().asSeconds() < 14.f && !store.is_store_open())
         {
-            popup_console_window(user_input, command_required, command_required_text, input_command_text);
+            popup_console_window(user_input, command_required, command_required_text, input_command_text,
+            console_time, time_bar);
             window.draw(translucent_background);
             window.draw(console);
             window.draw(text_field);
             window.draw(command_required_text);
             window.draw(input_command_text);
+            window.draw(time_bar);
         }
         else if (click_flag && !store.is_store_open())
         {
             user_fails_attack(user, anonymity_sprite, company_network, company_index);
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
+
+        
+        
 
         //user_succedes_attack
         // Draw store
