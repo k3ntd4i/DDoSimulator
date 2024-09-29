@@ -8,8 +8,8 @@ void Product::unlock() { is_unlocked = true; }
 std::string Product::get_name() const { return name; }
 std::string Product::get_description() const { return description; }
 int Product::get_price() const { return price; }
-bool Product::is_product_purchased() const { return is_purchased; }
-bool Product::is_product_unlocked() const { return is_unlocked; }
+//bool Product::is_product_purchased() const { return is_purchased; }
+//bool Product::is_product_unlocked() const { return is_unlocked; }
 void Product::set_position(float x, float y) { position = sf::Vector2f(x, y); }
 sf::Vector2f Product::get_position() const { return position; }
 
@@ -74,10 +74,13 @@ void Store::attempt_purchase(Product &product, sf::Text &coin_text, User &user, 
     {
         std::cout << "Not enough Yuca Coins to purchase" << product.get_name() << '\n';
     }
-    // else if (!product.is_product_unlocked())
-    // {
-    //     std::cout << "The product is not unlocked" << product.get_name() << '\n';
-    // }
+    /*
+    else if (!product.is_product_unlocked())
+    {
+        std::cout << "The product is not unlocked" << product.get_name() << '\n';
+    }
+    */
+
     else if (!product.is_product_purchased())
     {
         std::cout << "Purchased power: " << product.get_name() << '\n';
@@ -87,7 +90,7 @@ void Store::attempt_purchase(Product &product, sf::Text &coin_text, User &user, 
 
         std::string product_description{ product.get_description() };
 
-        if (product.get_price() == 10)
+        if (product.get_price() == 10 )
         {
             gameplay_status.decrease_quantity_words();
             user.increase_hack_intensity(1);
@@ -100,6 +103,8 @@ void Store::attempt_purchase(Product &product, sf::Text &coin_text, User &user, 
         {
             gameplay_status.decrease_quantity_words();
         }
+
+        product.set_is_purchased(true);
     }
 }
 
@@ -178,19 +183,28 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
         node.setScale(0.25f, 0.25f);
         
         node.setPosition(product.get_position());
-        if (user.get_yuca_coins() >= product.get_price() && !product.is_product_purchased())
-        {
-            node.setTextureRect(sf::IntRect(0, 0, 240, 240));
-        }
-        else if (product.is_product_purchased())
-        {
-            node.setTextureRect(sf::IntRect(960, 0, 240, 240));
-        }
-        else
+
+        if (!product.is_product_purchased() && user.get_yuca_coins() < product.get_price())
         {
             node.setTextureRect(sf::IntRect(720, 0, 240, 240));
         }
+        else if (product.get_price() == 10 && user.get_yuca_coins() >= product.get_price())
+        {
+            node.setTextureRect(sf::IntRect(480, 0, 240, 240));
+        }
+        else if (product.get_price() < 10 && user.get_yuca_coins() >= product.get_price())
+        {
+            node.setTextureRect(sf::IntRect(0, 0, 240, 240));
+        }
+        else if (product.get_price() > 10 && user.get_yuca_coins() >= product.get_price())
+        {
+            node.setTextureRect(sf::IntRect(240, 0, 240, 240));
+        }else if (product.is_product_purchased())
+        {
+            node.setTextureRect(sf::IntRect(960, 0, 240, 240));
+        }
         
+
         window.draw(node);
 
     }

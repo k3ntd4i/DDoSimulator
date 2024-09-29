@@ -29,9 +29,11 @@ public:
     std::string get_name() const;
     std::string get_description() const;
     int get_price() const;
-    bool is_product_purchased() const;
-    bool is_product_unlocked() const;
+    bool is_product_purchased() const {return is_purchased;}
+    bool is_product_unlocked() const {return is_unlocked;}
     void set_position(float x, float y);
+    void set_is_purchased(bool purchased) { this->is_purchased = purchased; }
+    void set_is_unlocked(bool unlocked) { this->is_unlocked = unlocked; }
     sf::Vector2f get_position() const;
 
     bool operator<(const Product& other) const;
