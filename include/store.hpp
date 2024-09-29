@@ -7,6 +7,8 @@
 #include <iostream>
 #include <optional>
 #include <vector>
+#include "../include/gameplay.hpp"
+#include "../include/user.hpp"
 
 class Product {
 private:
@@ -44,12 +46,13 @@ private:
     sf::Sprite store_icon_sprite{};
     bool _is_store_open{false};
     std::vector<Product> pre_order_products{};
-    int yuca_coins{100};
+    //int yuca_coins{10000};
+
 
     void initialize_power_tree();
     void update_pre_order_products();
-    void draw_power_tree(sf::RenderWindow& window, const sf::Font& font);
-    bool attempt_purchase(const Product& product);
+    void draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User &user);
+    bool attempt_purchase(Product& product, sf::Text &coin_textm, User &user);
     void collect_pre_order_products(ArbolBinario<Product>* node);
 
 public:
@@ -59,9 +62,9 @@ public:
     void set_store_icon_position(float x, float y);
     void toggle_store();
     bool is_store_open() const { return _is_store_open; }
-    void handle_click(float x, float y, const sf::Font& font);
-    void update(sf::RenderWindow& window);
-    void draw(sf::RenderWindow& window, const sf::Font& font);
+    void handle_click(float x, float y, sf::Text &coin_text, User &user);
+    //void update(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window, const sf::Font& font, User &user);
     void set_product_position(const std::string& product_name, float x, float y);
     ArbolBinario<Product>* get_power_tree_root() { return power_tree.get_root(); }
 };

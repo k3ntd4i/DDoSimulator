@@ -69,27 +69,33 @@ void Store::toggle_store() {
     _is_store_open = !_is_store_open;
 }
 
-bool Store::attempt_purchase(const Product& product) {
-    if (yuca_coins >= product.get_price().value_or(0)) {
-        yuca_coins -= product.get_price().value_or(0);
+bool Store::attempt_purchase(Product &product, sf::Text &coin_text, User &user) {
+    
+    if (user.get_yuca_coins() >= product.get_price().value_or(0) && !product.is_product_purchased()) 
+    {
+    
         std::cout << "Purchased power: " << product.get_name().value_or("Unknown") << std::endl;
+        user.update_yuca_coins_wallet(-(product.get_price().value_or(0)));
+        coin_text.setString( std::to_string(user.get_yuca_coins()) );
+        product.purchase();
         return true;
     } else {
         std::cout << "Not enough Yuca Coins to purchase " << product.get_name().value_or("Unknown") << std::endl;
         return false;
     }
+
 }
 
-void Store::handle_click(float x, float y, const sf::Font& font) {
+void Store::handle_click(float x, float y, sf::Text &coin_text, User &user) {
     sf::FloatRect icon_bounds = store_icon_sprite.getGlobalBounds();
     if (icon_bounds.contains(x, y)) {
         toggle_store();
     } else if (is_store_open()) {
-        for (const auto& product : pre_order_products) {
+        for (auto &product : pre_order_products) {
             sf::CircleShape node(40.f);
             node.setPosition(product.get_position());
             if (node.getGlobalBounds().contains(x, y)) {
-                attempt_purchase(product);
+                attempt_purchase(product, coin_text, user);
                 break;
             }
         }
@@ -97,10 +103,12 @@ void Store::handle_click(float x, float y, const sf::Font& font) {
 }
 
 
-void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font) {
+void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User &user) {
+    
     // Dibujar el fondo transparente de la tienda
-    sf::RectangleShape background_block{ sf::Vector2f{ 1280.f, 720.f } };
-    background_block.setFillColor(sf::Color(0, 0, 0, 150));
+    sf::RectangleShape background_block{ sf::Vector2f{ 1140.f, 720.f } };
+    background_block.setPosition(114.f,0.f);
+    background_block.setFillColor(sf::Color(0, 0, 0, 190));
     window.draw(background_block);
 
     // Cargar y dibujar la imagen de fondo de la tienda
@@ -124,47 +132,56 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font) {
     // Dibujar el borde de la ventana de la tienda
     sf::RectangleShape store_window_border{ sf::Vector2f{ background_width, background_height } };
     store_window_border.setFillColor(sf::Color::Transparent);
-    store_window_border.setOutlineColor(sf::Color::Green);
-    store_window_border.setOutlineThickness(5.f);
+    store_window_border.setOutlineColor(sf::Color::White);
+    store_window_border.setOutlineThickness(2.f);
     store_window_border.setPosition(160.f, 90.f); // Alinear con la imagen de fondo
     window.draw(store_window_border);
 
-    sf::Text coins_text{ "Yuca Coins: " + std::to_string(yuca_coins), font, 30 };
-    coins_text.setFillColor(sf::Color::White);  
-    coins_text.setPosition(800.f, 130.f);
-    window.draw(coins_text);
+
+    //codigo aqu ixdd
+    sf::Texture nodes_texture;
+    if (!nodes_texture.loadFromFile("assets/images/nodes_texture.png")) {
+        std::cerr << "The  texture could not be loaded." << std::endl;
+        return;
+    }
 
     float node_radius = 30.f;
-
+    sf::Sprite node(nodes_texture);
     // Dibujar nodos de los productos
     for (const auto& product : pre_order_products) {
-        sf::CircleShape node(node_radius);
+        
+        node.setScale(0.25f, 0.25f);
+        
         node.setPosition(product.get_position());
-        node.setFillColor(yuca_coins >= product.get_price().value_or(0) ? sf::Color::Green : sf::Color::Red);
+        if (user.get_yuca_coins() >= product.get_price().value_or(0) && !product.is_product_purchased())
+        {
+            node.setTextureRect(sf::IntRect(0, 0, 240, 240));
+        }
+        else if (product.is_product_purchased())
+        {
+            node.setTextureRect(sf::IntRect(960, 0, 240, 240));
+        }
+        else
+        {
+            node.setTextureRect(sf::IntRect(720, 0, 240, 240));
+        }
+        
         window.draw(node);
 
-        sf::Text node_text{ product.get_name().value_or("Unnamed"), font, 16 };
-        node_text.setFillColor(sf::Color::Black);
-
-        sf::FloatRect textRect = node_text.getLocalBounds();
-        node_text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top + textRect.height/2.0f);
-        node_text.setPosition(product.get_position().x + node_radius, product.get_position().y + node_radius);
-        
-        window.draw(node_text);
     }
 }
 
-
-
+/*
 void Store::update(sf::RenderWindow& window) {
     // Any update logic if needed
 }
+*/
 
-void Store::draw(sf::RenderWindow& window, const sf::Font& font) {
+void Store::draw(sf::RenderWindow& window, const sf::Font& font, User &user) {
     window.draw(store_icon_sprite);
     
     if (is_store_open()) {
-        draw_power_tree(window, font);
+        draw_power_tree(window, font, user);
     }
 }
 

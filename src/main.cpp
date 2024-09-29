@@ -136,10 +136,11 @@ int main()
                 break;
 
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left) {
+                if (event.mouseButton.button == sf::Mouse::Left) 
+                {
                     store.handle_click(static_cast<float>(event.mouseButton.x), 
-                                       static_cast<float>(event.mouseButton.y),
-                                       font);
+                                        static_cast<float>(event.mouseButton.y),
+                                        coin_text, user);
                 }
                 break;
 
@@ -235,7 +236,7 @@ int main()
         }
 
         // Draw store
-        store.draw(window, font);
+        store.draw(window, font, user);
 
         window.display();
     }
