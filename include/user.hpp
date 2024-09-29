@@ -16,11 +16,11 @@ public:
     int get_hack_intensity() { return hack_intensity; }
     int get_indirect_hack_intensity() { return indirect_hack_intensity; }
     bool was_captured() { return captured; }
-    void increase_hack_intensity(int new_intesity) { this->hack_intensity += new_intesity; }
+    void increase_hack_intensity(int increase_intesity) { this->hack_intensity += increase_intesity; }
 
-    void increase_indirect_hack_intensity(int new_intesity)
+    void increase_indirect_hack_intensity(int increase_intesity)
     {
-        this->indirect_hack_intensity += new_intesity;
+        this->indirect_hack_intensity += increase_intesity;
     }
 
     void update_yuca_coins_wallet(int cash_flow) { this->yuca_coins += cash_flow; }
