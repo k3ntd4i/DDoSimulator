@@ -22,6 +22,7 @@ void verify_node_click
             company_index = i;
             click_flag = true;
             console_time.restart();
+            break;
         }
     }
 }
