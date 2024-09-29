@@ -28,6 +28,13 @@ public:
     void decrease_anonymity()
     {
         --this->anonymity;
+
+        if (this->anonymity < 0)
+        {
+            this->anonymity = 0;
+            return;
+        }
+
         if (this->anonymity == 0) { this->captured = true; }
     }
 };
