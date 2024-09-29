@@ -188,15 +188,15 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
         {
             node.setTextureRect(sf::IntRect(720, 0, 240, 240));
         }
-        else if (product.get_price() == 10 && user.get_yuca_coins() >= product.get_price())
+        else if (!product.is_product_purchased() && product.get_price() == 10 && user.get_yuca_coins() >= product.get_price())
         {
             node.setTextureRect(sf::IntRect(480, 0, 240, 240));
         }
-        else if (product.get_price() < 10 && user.get_yuca_coins() >= product.get_price())
+        else if (!product.is_product_purchased() && product.get_price() < 10 && user.get_yuca_coins() >= product.get_price())
         {
             node.setTextureRect(sf::IntRect(0, 0, 240, 240));
         }
-        else if (product.get_price() > 10 && user.get_yuca_coins() >= product.get_price())
+        else if (!product.is_product_purchased() && product.get_price() > 10 && user.get_yuca_coins() >= product.get_price())
         {
             node.setTextureRect(sf::IntRect(240, 0, 240, 240));
         }else if (product.is_product_purchased())

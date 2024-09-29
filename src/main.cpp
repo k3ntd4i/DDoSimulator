@@ -111,7 +111,7 @@ int main()
 
     initialize_console_window(translucent_background, console, text_field);
 
-    sf::Time countdown_time{ sf::seconds(300.0f) };
+    sf::Time countdown_time{ sf::seconds(200.0f) };
     sf::Clock countdown_clock{};
 
     Gameplay gameplay_status{};
@@ -267,7 +267,7 @@ int main()
         store.draw(window, font, user);
 
 
-        if ( user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= 300.f)
+        if ( user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= 200.f)
         {
             window.draw(fail_background_sprite);
             window.draw(fail_text);                
