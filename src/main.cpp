@@ -85,7 +85,7 @@ int main()
 
     initialize_console_window(translucent_background, console, text_field);
 
-    float time_game{ 480.f };
+    float time_game{ 420.f };
     sf::Time countdown_time{ sf::seconds(time_game) };
     sf::Clock countdown_clock{};
 
@@ -94,6 +94,11 @@ int main()
     Cola<std::string> extracted_words{};
     std::string user_input{};
     std::string command_required{};
+
+    sf::Text hack_intensity_text{};
+    hack_intensity_text.setFont(font);
+    hack_intensity_text.setCharacterSize(20);
+    hack_intensity_text.setPosition(25.f, 28.f);
 
     sf::Clock console_time{};
 
@@ -216,7 +221,7 @@ int main()
         }
 
         draw_bar(window, progress_bar_text, gameplay_status);
-        draw_countdown(window, countdown_clock, countdown_time, countdown_text);
+        draw_countdown(window, countdown_clock, countdown_time, countdown_text, end_game);
         store.draw(window, font, user);
         window.draw(circle_coin_container);
         window.draw(coin_text);
@@ -240,17 +245,25 @@ int main()
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
+        hack_intensity_text.setString
+        (
+            "hack intensity: " + std::to_string(user.get_hack_intensity())
+            + "\nindirect hack intensity: " + std::to_string(user.get_indirect_hack_intensity())
+        );
+
+        window.draw(hack_intensity_text);
+
         if (user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= time_game)
         {
             end_game = true;
             window.draw(fail_background_sprite);
-            sf::Mouse::setPosition(sf::Vector2i{640, 360}, window);
+            sf::Mouse::setPosition(sf::Vector2i{ 640, 360 }, window);
         }
         else if (gameplay_status.get_company_counter() == 22)
         {
             end_game = true;
             window.draw(win_background_sprite);
-            sf::Mouse::setPosition(sf::Vector2i{640, 360}, window);
+            sf::Mouse::setPosition(sf::Vector2i{ 640, 360 }, window);
         }
 
         window.display();

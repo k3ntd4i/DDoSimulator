@@ -9,5 +9,6 @@ void draw_countdown
     sf::RenderWindow &window,
     sf::Clock &clock,
     sf::Time &countdown_time,
-    sf::Text &countdown_text
+    sf::Text &countdown_text,
+    bool end_game
 );

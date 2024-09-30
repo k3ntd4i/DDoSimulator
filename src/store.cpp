@@ -36,13 +36,13 @@ void Store::initialize_power_tree()
     power_tree.insert(Product("Exploit Enhancer", "    Increases attack power by 1\nand removes 1 word from terminal", 10));
     power_tree.insert(Product("Firewall Bypass", "Removes 1 word from terminal", 7));
     power_tree.insert(Product("DDoS Amplifier", "Increases attack power by 5", 14));
-    power_tree.insert(Product("Ultimate Exploit", "Increases attack power by 50", 45));
+    power_tree.insert(Product("Ultimate Exploit", "Increases attack power by 50", 34));
     power_tree.insert(Product("Zero-Day Surge", "Increases attack power by 12", 12));
     power_tree.insert(Product("Code Injection", "Removes 1 word from terminal", 5));
     power_tree.insert(Product("Packet Sniffer", "Removes 1 word from terminal", 4));
     power_tree.insert(Product("Rootkit Reducer", "Removes 1 word from terminal", 8));
     power_tree.insert(Product("Malware Minimizer", "Removes 1 word from terminal", 9));
-    power_tree.insert(Product("Brute Force Multiplier", "Increases attack power by 24", 11));
+    power_tree.insert(Product("Brute Force Multiplier", "Increases attack power by 22", 11));
 }
 
 void Store::update_pre_order_products()
@@ -162,7 +162,7 @@ void Store::attempt_purchase
 
 void Store::handle_click(float x, float y, sf::Text &coin_text, User &user, Gameplay &gameplay_status)
 {
-    sf::FloatRect icon_bounds = store_icon_sprite.getGlobalBounds();
+    static sf::FloatRect icon_bounds{ store_icon_sprite.getGlobalBounds() };
 
     if (icon_bounds.contains(x, y))
     {
@@ -188,21 +188,21 @@ void Store::handle_click(float x, float y, sf::Text &coin_text, User &user, Game
 
 void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User &user)
 {
-    sf::RectangleShape background_block{ sf::Vector2f{ 1140.f, 720.f } };
+    static sf::RectangleShape background_block{ sf::Vector2f{ 1140.f, 720.f } };
     background_block.setPosition(114.f,0.f);
     background_block.setFillColor(sf::Color(0, 0, 0, 190));
     window.draw(background_block);
 
-    sf::Texture shop_background_texture{};
+    static sf::Texture shop_background_texture{};
     if (!shop_background_texture.loadFromFile("assets/images/shop_background.png"))
     {
         std::cerr << "Failed to load shop background image." << '\n';
         return;
     }
 
-    sf::Sprite shop_background_sprite(shop_background_texture);
-    float background_width{ 960.f };
-    float background_height{ 540.f };
+    static sf::Sprite shop_background_sprite{ shop_background_texture };
+    static float background_width{ 960.f };
+    static float background_height{ 540.f };
 
     shop_background_sprite.setScale
     (
@@ -214,21 +214,21 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
 
     window.draw(shop_background_sprite);
 
-    sf::RectangleShape store_window_border{ sf::Vector2f{ background_width, background_height } };
+    static sf::RectangleShape store_window_border{ sf::Vector2f{ background_width, background_height } };
     store_window_border.setFillColor(sf::Color::Transparent);
     store_window_border.setOutlineColor(sf::Color::White);
     store_window_border.setOutlineThickness(2.f);
     store_window_border.setPosition(160.f, 90.f);
     window.draw(store_window_border);
 
-    sf::Texture nodes_texture{};
+    static sf::Texture nodes_texture{};
     if (!nodes_texture.loadFromFile("assets/images/nodes_texture.png"))
     {
         std::cerr << "The texture could not be loaded." << '\n';
         return;
     }
 
-    sf::Sprite node(nodes_texture);
+    sf::Sprite node{ nodes_texture };
 
     // Dibujar nodos de los productos
     Product *product{};
@@ -278,17 +278,17 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
 
         if (node.getGlobalBounds().contains(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y))
         {
-            sf::Text name{};
+            static sf::Text name{};
             name.setFont(font);
             name.setCharacterSize(20);
             name.setString(product->get_name());
 
-            sf::Text price{};
+            static sf::Text price{};
             price.setFont(font);
             price.setCharacterSize(20);
             price.setString(std::to_string(product->get_price()) + " yucacoins");
 
-            sf::Text information{};
+            static sf::Text information{};
             information.setFont(font);
             information.setCharacterSize(20);
             information.setString(product->get_description());

@@ -5,9 +5,16 @@ void draw_countdown
     sf::RenderWindow &window,
     sf::Clock &clock,
     sf::Time &countdown_time,
-    sf::Text &countdown_text
+    sf::Text &countdown_text,
+    bool end_game
 )
 {
+    if (end_game)
+    {
+        window.draw(countdown_text);
+        return;
+    }
+
     sf::Time time_remaining{ countdown_time - clock.getElapsedTime() };
 
     if (time_remaining.asSeconds() <= 0)

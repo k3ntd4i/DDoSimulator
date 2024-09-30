@@ -103,9 +103,11 @@ void user_succeeds_attack
             std::cout << "\nHAS HACKEADO EL PLANETA BRO, EPIC WIN!!!!111\n";
         }
 
-        if (gameplay_status.get_company_counter() == 3)
+        static bool already_increased{ false };
+        if (gameplay_status.get_company_counter() == 3 && !already_increased)
         {
             user.increase_indirect_hack_intensity(6);
+            already_increased = true;
         }
 
         node->get_circle().setOutlineColor(sf::Color{ 0, 162, 232 });
