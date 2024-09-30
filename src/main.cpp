@@ -37,13 +37,9 @@ int main()
 
     sf::Texture fail_background_texture{};
     sf::Sprite fail_background_sprite{};
-    sf::Text fail_text{};
 
     sf::Texture win_background_texture{};
     sf::Sprite win_background_sprite{};
-    sf::Text win_text{};
-
-    sf::Text exit_text{};
 
     User user{};
 
@@ -63,8 +59,8 @@ int main()
         initialize_coins(user.get_yuca_coins(), font, coin_text, circle_coin_container, coin_texture);
         initialize_companies_and_network(companies, company_network);
         store.initialize_store_icon();
-        initialize_fail_background(fail_background_texture, fail_background_sprite, font, fail_text);
-        initialize_win_background(win_background_texture, win_background_sprite, font, win_text);
+        initialize_fail_background(fail_background_texture, fail_background_sprite);
+        initialize_win_background(win_background_texture, win_background_sprite);
     }
     catch (const std::runtime_error &error)
     {
@@ -89,7 +85,8 @@ int main()
 
     initialize_console_window(translucent_background, console, text_field);
 
-    sf::Time countdown_time{ sf::seconds(200.0f) };
+    float time_game{ 480.f };
+    sf::Time countdown_time{ sf::seconds(time_game) };
     sf::Clock countdown_clock{};
 
     Gameplay gameplay_status{};
@@ -99,7 +96,6 @@ int main()
     std::string command_required{};
 
     sf::Clock console_time{};
-    sf::Clock console_time_indicator{}; //para la barra de tiempo xd
 
     bool end_game{ false };
     bool click_flag{ false };
@@ -225,7 +221,9 @@ int main()
         window.draw(circle_coin_container);
         window.draw(coin_text);
 
-        if (click_flag && console_time.getElapsedTime().asSeconds() < 14.f && !store.is_store_open())
+        if (click_flag
+            && console_time.getElapsedTime().asSeconds() < gameplay_status.get_console_time_limit()
+            && !store.is_store_open())
         {
             popup_console_window(user_input, command_required, command_required_text, input_command_text,
             console_time, time_bar);
@@ -242,18 +240,16 @@ int main()
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
-        if (user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= 200.f)
+        if (user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= time_game)
         {
             end_game = true;
             window.draw(fail_background_sprite);
-            window.draw(fail_text);
             sf::Mouse::setPosition(sf::Vector2i{640, 360}, window);
         }
         else if (gameplay_status.get_company_counter() == 22)
         {
             end_game = true;
             window.draw(win_background_sprite);
-            window.draw(win_text);
             sf::Mouse::setPosition(sf::Vector2i{640, 360}, window);
         }
 

@@ -78,32 +78,32 @@ void popup_console_window
     }
 
     float elapsed_time{console_time.getElapsedTime().asSeconds()};
-    if (elapsed_time < 3.5f)
+    if (elapsed_time < 4.f)
     {
         time_bar.setFillColor(sf::Color::Green);
         time_bar.setSize(sf::Vector2f{638.f, 7.f});
     }
-    else if (elapsed_time >= 3.5f && elapsed_time < 7.f)
+    else if (elapsed_time >= 4.f && elapsed_time < 7.5f)
     {
         time_bar.setFillColor(sf::Color::Yellow);
         time_bar.setSize(sf::Vector2f{478.f, 7.f});
     }
-    else if (elapsed_time >= 7.f && elapsed_time <= 10.5f)
+    else if (elapsed_time >= 7.5f && elapsed_time <= 9.f)
     {
         time_bar.setFillColor(sf::Color(255,131,0));
         time_bar.setSize(sf::Vector2f{319.f, 7.f});
     }
-    else if (elapsed_time >= 10.5f && elapsed_time < 12.f)
+    else if (elapsed_time >= 9.f && elapsed_time < 10.5f)
     {
         time_bar.setFillColor(sf::Color::Red);
         time_bar.setSize(sf::Vector2f{159.f, 7.f});
     }
-    else if (elapsed_time >= 12.f && elapsed_time < 13.5f)
+    else if (elapsed_time >= 10.5f && elapsed_time < 12.f)
     {
         time_bar.setFillColor(sf::Color::Red);
         time_bar.setSize(sf::Vector2f{40.f, 7.f});
     }
-    else if (elapsed_time >= 13.5f)
+    else if (elapsed_time >= 12.f)
     {
         time_bar.setFillColor(sf::Color::Red);
         time_bar.setSize(sf::Vector2f{6.f, 7.f});

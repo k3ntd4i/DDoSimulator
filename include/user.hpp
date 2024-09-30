@@ -4,8 +4,8 @@ class User
 {
     int anonymity{ 5 };
     int yuca_coins{ 0 };
-    int hack_intensity{ 100 };
-    int indirect_hack_intensity{ 25 };
+    int hack_intensity{ 10 };
+    int indirect_hack_intensity{ 10 };
     bool captured{ false };
 
 public:

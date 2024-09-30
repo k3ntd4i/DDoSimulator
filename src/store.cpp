@@ -250,6 +250,10 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
             {
                 node.setColor(sf::Color{ 255, 255, 255, 70 });
             }
+            else
+            {
+                node.setColor(sf::Color{ 255, 255, 255, 255 });
+            }
 
             if (product->get_price() == 10)
             {

@@ -208,9 +208,7 @@ void initialize_anonymity(int anonymity, sf::Sprite &anonymity_sprite, sf::Textu
 void initialize_fail_background
 (
     sf::Texture &fail_background_texture,
-    sf::Sprite &fail_background_sprite,
-    sf::Font &font,
-    sf::Text &fail_text
+    sf::Sprite &fail_background_sprite
 )
 {
     if (!fail_background_texture.loadFromFile(R"(assets\images\fail_background.png)"))
@@ -219,14 +217,6 @@ void initialize_fail_background
     }
 
     fail_background_sprite.setTexture( fail_background_texture );
-    fail_background_sprite.setScale(1.f, 1.f);
-    fail_background_sprite.setPosition(0.f, 0.f);
-
-    fail_text.setFont(font);
-    fail_text.setFillColor(sf::Color::Red);
-    fail_text.setCharacterSize(160);
-    fail_text.setString("Fuiste capturado");
-    fail_text.setPosition(640 - (fail_text.getGlobalBounds().width / 2), 360 - (fail_text.getGlobalBounds().height));
 }
 
 /**
@@ -235,9 +225,7 @@ void initialize_fail_background
 void initialize_win_background
 (
     sf::Texture &win_background_texture,
-    sf::Sprite &win_background_sprite,
-    sf::Font &font,
-    sf::Text &win_text
+    sf::Sprite &win_background_sprite
 )
 {
     if (!win_background_texture.loadFromFile(R"(assets\images\win_background.png)"))
@@ -246,12 +234,4 @@ void initialize_win_background
     }
 
     win_background_sprite.setTexture( win_background_texture );
-    win_background_sprite.setScale(1.f, 1.f);
-    win_background_sprite.setPosition(0.f, 0.f);
-
-    win_text.setFont(font);
-    win_text.setFillColor(sf::Color::White);
-    win_text.setCharacterSize(160);
-    win_text.setString("Ciberespacio\nconquistado");
-    win_text.setPosition(640 - (win_text.getGlobalBounds().width / 2), 435 - (win_text.getGlobalBounds().height));
 }

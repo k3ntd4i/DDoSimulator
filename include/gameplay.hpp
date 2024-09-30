@@ -6,7 +6,7 @@ class Gameplay
     int quantity_words{ 9 };
     bool hard{ false };
     bool extreme{ false };
-    float console_time_limit{ 13.f };
+    float console_time_limit{ 12.f };
 
 public:
     Gameplay() = default;
