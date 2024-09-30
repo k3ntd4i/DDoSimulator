@@ -31,6 +31,45 @@ void draw_bar(sf::RenderWindow &window, sf::Text &progress_bar_text, Gameplay &g
     }
 }
 
+void draw_company_information
+(
+    sf::RenderWindow &window,
+    sf::Font &font,
+    const std::string &company_name,
+    Node *company_node,
+    Company *company
+)
+{
+    static sf::RectangleShape information_box{ sf::Vector2f{ 106.f, 40.f } };
+
+    information_box.setFillColor(sf::Color::Black);
+    information_box.setOutlineThickness(-1);
+    information_box.setOutlineColor(sf::Color::White);
+
+    static sf::Text information_text{};
+    information_text.setFont(font);
+    information_text.setString(company_name + "\nintegrity: " + std::to_string(company->get_integrity()));
+
+    information_text.setCharacterSize(16);
+
+    static float x{};
+    static float y{};
+
+    x = company_node->get_circle().getPosition().x;
+    y = company_node->get_circle().getPosition().y;
+
+    // Centrado y arriba:
+    // information_box.setPosition(x - 55.f, y - 57.f);
+    // information_text.setPosition(x - 49.f, y - 56.f);
+
+    // Abajo a la derecha
+    information_box.setPosition(x + 4, y + 4.f);
+    information_text.setPosition(x + 10.f, y + 5.f);
+
+    window.draw(information_box);
+    window.draw(information_text);
+}
+
 void popup_console_window
 (
     const std::string &user_input,

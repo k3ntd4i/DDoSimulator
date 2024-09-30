@@ -16,6 +16,7 @@
 void verify_node_click
 (
     sf::RenderWindow &window,
+    sf::Vector2i &mouse_position,
     GrafoSimple<Node*> &company_network,
     bool &click_flag,
     sf::Clock &console_time,

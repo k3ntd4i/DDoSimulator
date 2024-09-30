@@ -3,20 +3,19 @@
 void verify_node_click
 (
     sf::RenderWindow &window,
+    sf::Vector2i &mouse_position,
     GrafoSimple<Node*> &company_network,
     bool &click_flag,
     sf::Clock &console_time,
     int &company_index
 )
 {
-    sf::Vector2i mousePos{ sf::Mouse::getPosition(window) };
     for (int i{0}; i < 22; ++i)
     {
         if (company_network.get_element(i)->get_circle().getGlobalBounds().contains
-            (static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))
+            (static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y))
 
-            && company_network.get_element(i)->is_available()
-        )
+            && company_network.get_element(i)->is_available())
         {
             std::cout << "\nCircle " << i + 1 << " clicked\n";
             company_index = i;

@@ -102,6 +102,9 @@ int main()
 
     sf::Clock console_time{};
 
+    Node *temporal_node{};
+    sf::Vector2i mouse_position{};
+
     bool end_game{ false };
     bool click_flag{ false };
     int company_index{};
@@ -144,7 +147,8 @@ int main()
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag && !store.is_store_open())
         {
-            verify_node_click(window, company_network, click_flag, console_time, company_index);
+            mouse_position = sf::Mouse::getPosition(window);
+            verify_node_click(window, mouse_position, company_network, click_flag, console_time, company_index);
 
             if (click_flag)
             {
@@ -218,6 +222,19 @@ int main()
             }
 
             window.draw(company_network.get_element(i)->get_circle());
+        }
+
+        for (int i{0}; i < company_network.size(); ++i)
+        {
+            temporal_node = company_network.get_element(i);
+            mouse_position = sf::Mouse::getPosition(window);
+
+            if (temporal_node->get_circle().getGlobalBounds().contains
+                (static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y)))
+            {
+                std::string company_name{ temporal_node->get_company_name() };
+                draw_company_information(window, font, company_name, temporal_node, companies.search(company_name));
+            }
         }
 
         draw_bar(window, progress_bar_text, gameplay_status);

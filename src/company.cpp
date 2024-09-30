@@ -11,6 +11,8 @@ void Company::update_integrity(int damage, Gameplay &gameplay_status)
 
     if (this->integriy <= 0)
     {
+        this->integriy = 0;
+
         gameplay_status.increase_company_counter();
         this->active = false;
     }

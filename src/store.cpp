@@ -100,7 +100,7 @@ void Store::set_store_icon_position(float x, float y)
 
 void Store::toggle_store()
 {
-    _is_store_open = !_is_store_open;
+    store_open = !store_open;
 }
 
 void Store::attempt_purchase
@@ -162,7 +162,7 @@ void Store::attempt_purchase
 
 void Store::handle_click(float x, float y, sf::Text &coin_text, User &user, Gameplay &gameplay_status)
 {
-    static sf::FloatRect icon_bounds{ store_icon_sprite.getGlobalBounds() };
+    sf::FloatRect icon_bounds{ store_icon_sprite.getGlobalBounds() };
 
     if (icon_bounds.contains(x, y))
     {
@@ -200,7 +200,7 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
         return;
     }
 
-    static sf::Sprite shop_background_sprite{ shop_background_texture };
+    sf::Sprite shop_background_sprite{ shop_background_texture };
     static float background_width{ 960.f };
     static float background_height{ 540.f };
 

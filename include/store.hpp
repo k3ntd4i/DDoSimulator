@@ -47,7 +47,7 @@ class Store
     ArbolBusquedaBinaria<Product> power_tree{};
     sf::Texture store_icon_texture{};
     sf::Sprite store_icon_sprite{};
-    bool _is_store_open{};
+    bool store_open{};
     Lista<ArbolBinario<Product>*> pre_order_products{};
 
     void initialize_power_tree();
@@ -70,7 +70,7 @@ public:
     void initialize_store_icon();
     void set_store_icon_position(float x, float y);
     void toggle_store();
-    bool is_store_open() const { return _is_store_open; }
+    bool is_store_open() const { return store_open; }
     void handle_click(float x, float y, sf::Text &coin_text, User &user, Gameplay &gameplay_status);
     void draw(sf::RenderWindow& window, const sf::Font& font, User &user);
     void set_product_position(const std::string& product_name, float x, float y);
