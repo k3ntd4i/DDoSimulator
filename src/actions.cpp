@@ -18,7 +18,7 @@ void verify_node_click
             && company_network.get_element(i)->is_available()
         )
         {
-            std::cout << "Circle " << i + 1 << " clicked\n";
+            std::cout << "\nCircle " << i + 1 << " clicked\n";
             company_index = i;
             click_flag = true;
             console_time.restart();

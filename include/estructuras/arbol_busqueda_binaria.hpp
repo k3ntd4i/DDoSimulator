@@ -23,7 +23,7 @@ public:
         liberar_memoria(this->arbol);
     }
 
-    ArbolBinario<T>* get_root() {
+    ArbolBinario<T> *get_root() {
         return this->arbol;
     }
     

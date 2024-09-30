@@ -105,7 +105,7 @@ public:
         return this->hijo_derecho;
     }
 
-    T get_element()
+    T &get_element()
     {
         return this->elemento;
     }

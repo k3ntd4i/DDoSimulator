@@ -165,12 +165,12 @@ int main()
 
             if (is_input_command_correct(user_input, extracted_words))
             {
-                std::cout << "\nCorrecto!\n";
+                std::cout << "Correcto!\n";
                 user_succeeds_attack(user, coin_text, company_network, companies, gameplay_status, company_index);
             }
             else
             {
-                std::cout << "\nInorrecto!\n";
+                std::cout << "Inorrecto!\n";
                 user_fails_attack(user, anonymity_sprite, company_network, company_index);
             }
 
@@ -247,14 +247,14 @@ int main()
             end_game = true;
             window.draw(fail_background_sprite);
             window.draw(fail_text);
-            sf::Mouse::setPosition(sf::Vector2i{0, 0}, window);
+            sf::Mouse::setPosition(sf::Vector2i{640, 360}, window);
         }
         else if (gameplay_status.get_company_counter() == 22)
         {
             end_game = true;
             window.draw(win_background_sprite);
             window.draw(win_text);
-            sf::Mouse::setPosition(sf::Vector2i{0, 0}, window);
+            sf::Mouse::setPosition(sf::Vector2i{640, 360}, window);
         }
 
         window.display();
