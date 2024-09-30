@@ -33,7 +33,7 @@ Store::Store()
 
 void Store::initialize_power_tree()
 {
-    power_tree.insert(Product("Exploit Enhancer", "Increases attack power by 1 and removes 1 word from terminal", 10));
+    power_tree.insert(Product("Exploit Enhancer", "    Increases attack power by 1\nand removes 1 word from terminal", 10));
     power_tree.insert(Product("Firewall Bypass", "Removes 1 word from terminal", 7));
     power_tree.insert(Product("DDoS Amplifier", "Increases attack power by 5", 14));
     power_tree.insert(Product("Ultimate Exploit", "Increases attack power by 50", 45));
@@ -271,6 +271,41 @@ void Store::draw_power_tree(sf::RenderWindow& window, const sf::Font& font, User
         }
 
         window.draw(node);
+
+        if (node.getGlobalBounds().contains(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y))
+        {
+            sf::Text name{};
+            name.setFont(font);
+            name.setCharacterSize(20);
+            name.setString(product->get_name());
+
+            sf::Text price{};
+            price.setFont(font);
+            price.setCharacterSize(20);
+            price.setString(std::to_string(product->get_price()) + " yucacoins");
+
+            sf::Text information{};
+            information.setFont(font);
+            information.setCharacterSize(20);
+            information.setString(product->get_description());
+
+            if (product->get_price() == 10)
+            {
+                name.setPosition(static_cast<int>(640 - (name.getGlobalBounds().width / 2)), 117.f);
+                price.setPosition(static_cast<int>(640 - (price.getGlobalBounds().width / 2)), 137.f);
+                information.setPosition(static_cast<int>(640 - (information.getGlobalBounds().width / 2)), 158.f);
+            }
+            else
+            {
+                name.setPosition(static_cast<int>(640 - (name.getGlobalBounds().width / 2)), 127.f);
+                price.setPosition(static_cast<int>(640 - (price.getGlobalBounds().width / 2)), 147.f);
+                information.setPosition(static_cast<int>(640 - (information.getGlobalBounds().width / 2)), 168.f);
+            }
+
+            window.draw(name);
+            window.draw(price);
+            window.draw(information);
+        }
     }
 }
 
