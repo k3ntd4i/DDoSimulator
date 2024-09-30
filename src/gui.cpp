@@ -63,7 +63,7 @@ void draw_company_information
     // information_text.setPosition(x - 49.f, y - 56.f);
 
     // Abajo a la derecha
-    information_box.setPosition(x + 4, y + 4.f);
+    information_box.setPosition(x + 4.f, y + 4.f);
     information_text.setPosition(x + 10.f, y + 5.f);
 
     window.draw(information_box);
