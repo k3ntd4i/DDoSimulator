@@ -270,16 +270,16 @@ int main()
 
         window.draw(hack_intensity_text);
 
-        if (user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= time_game)
-        {
-            end_game = true;
-            window.draw(fail_background_sprite);
-            sf::Mouse::setPosition(sf::Vector2i{ 640, 360 }, window);
-        }
-        else if (gameplay_status.get_company_counter() == 22)
+        if (gameplay_status.get_company_counter() == 22)
         {
             end_game = true;
             window.draw(win_background_sprite);
+            sf::Mouse::setPosition(sf::Vector2i{ 640, 360 }, window);
+        }
+        else if (user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= time_game)
+        {
+            end_game = true;
+            window.draw(fail_background_sprite);
             sf::Mouse::setPosition(sf::Vector2i{ 640, 360 }, window);
         }
 
