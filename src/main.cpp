@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include <cctype>
 
 int main()
 {
@@ -145,7 +146,7 @@ int main()
             window.close();
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag && !store.is_store_open())
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag && !store.is_store_open() && !end_game)
         {
             mouse_position = sf::Mouse::getPosition(window);
             verify_node_click(window, mouse_position, company_network, click_flag, console_time, company_index);
@@ -165,6 +166,11 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && click_flag)
         {
+            for (int i{0}; i < user_input.length(); ++i)
+            {
+                user_input[i] = std::tolower(user_input[i]);
+            }
+
             std::cout << "Texto ingresado: " << user_input << '\n';
             std::cout << "Texto requerido: " << command_required << '\n';
 
@@ -182,7 +188,7 @@ int main()
             clear_conditional_objects(extracted_words, click_flag, user_input, company_index);
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag)
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !click_flag && !end_game)
         {
             store.handle_click
             (
@@ -224,7 +230,7 @@ int main()
             window.draw(company_network.get_element(i)->get_circle());
         }
 
-        for (int i{0}; i < company_network.size(); ++i)
+        for (int i{0}; (i < company_network.size()) && !end_game; ++i)
         {
             temporal_node = company_network.get_element(i);
             mouse_position = sf::Mouse::getPosition(window);
@@ -274,13 +280,11 @@ int main()
         {
             end_game = true;
             window.draw(win_background_sprite);
-            sf::Mouse::setPosition(sf::Vector2i{ 640, 360 }, window);
         }
         else if (user.get_anonymity() == 0 || countdown_clock.getElapsedTime().asSeconds() >= time_game)
         {
             end_game = true;
             window.draw(fail_background_sprite);
-            sf::Mouse::setPosition(sf::Vector2i{ 640, 360 }, window);
         }
 
         window.display();
